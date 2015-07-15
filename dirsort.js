@@ -7,31 +7,28 @@ var readdir = Promise.promisify(fs.readdir);
 var asyncEach = Promise.promisify(async.each);
 
 	readFile('configuration.JSON', 'utf8')
-	.then(function(data) {
-		return JSON.parse(data);
-	}).each(function(task) {
-		readdir(task.path).then(function(files) {
-
-				files.map(function(file) {
-					testFile(task.path, task.matchAll, task.rules,file);
-				})
-
-		});
-	}).each(function(files) {
+	.then(data => JSON.parse(data))
+	.each(
+		task => {
+		readdir(task.path)
+		.then(files => files.every(file => 
+			{ 
+				if(testFile(task.path, task.matchAll, task.rules,file)) {
+					events[task.event.type](task.path, file, task.event.path);
+				}
+			}));
+		}
+	).each(function(files) {
 		//console.log("files:");
 		//console.log(files);
 	}).catch(function(err) {
 		throw new Error(err);
 	});
 
-
-
 function testFile(dir, matchAll, rules, file) {
 
-	var splitted = file.split('.')
-	, nrOfMatches;
-
-	console.log(splitted);
+	let nrOfMatches,
+			matches = 0;
 
 	if(matchAll) {
 		nrOfMatches = rules.length;
@@ -39,45 +36,51 @@ function testFile(dir, matchAll, rules, file) {
 		nrOfMatches = 1;
 	}
 
-	var matches = 0;
-	for(var i = 0; i < rules.length; i++) {
-		//console.log(rules[i].type);
-		if(rules[i].type === 'extension') {
-			if(rules[i].verifier === 'contains') {
-				if(rules[i].reference.indexOf(splitted[1]) >= 0) {
-					console.log("True test contains");
-					matches++;
 
-				}
-			} else if(rules[i].verifier === 'match') {
-				if(rules[i].reference === splitted[1]) {
-					console.log("True test match");
-					matches++;
-				}
-			}
-		} else if(rules[i].type === 'name') {
-			if(rules[i].verifier === 'contains') {
-				if(rules[i].reference.indexOf(splitted[0]) >= 0) {
-					console.log("True test contains");
-					matches++;
-
-				}
-			} else if(rules[i].verifier === 'match') {
-				if(rules[i].reference === splitted[0]) {
-					console.log("True test match");
-					matches++;
-				}
-			}
+	for(let i = 0; i < rules.length; i++) {
+		if(verifiers[rules[i].verifier](file, rules[i].type, rules[i].reference)) {
+			console.log("%s passed test '%s' with type: %s, reference: %s", file, rules[i].verifier, rules[i].type, rules[i].reference);
+			matches++;
+		} else {
+			console.log("%s did not pass test '%s' with type: %s, reference: %s", file, rules[i].verifier, rules[i].type, rules[i].reference);
 		}
 	}
 
-	console.log(matches, nrOfMatches);
-	console.log(matches === nrOfMatches);
 	if(matches === nrOfMatches) {
 		return true;
 	} else {
 		return false;
 	}
+}
 
 
+const verifiers = {
+	match: (file, type, reference) => {
+		let parts = file.split('.');
+		if(type === 'extension') {
+			return parts[1] === reference
+		}
+		if(type === 'name') {
+			return parts[0] === reference
+		}
+	},
+	contains: (file, type, reference) => {
+		let parts = file.split('.');
+		if(type === 'extension') {
+			return (parts[1].indexOf(reference) >= 0)
+		}
+		if(type === 'name') {
+			return (parts[0].indexOf(reference) >= 0)
+		}
+	}
+}
+
+const events = {
+	move: (originalFolder, file, folder) => {
+		console.log('moved file "%s" from %s to %s', file, originalFolder, folder);
+		/*let source = fs.createReadStream(originalFolder+file),
+				dest = fs.createWriteStream(folder+file);
+		source.pipe(dest);
+		source.on*/
+	}
 }
