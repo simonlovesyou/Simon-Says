@@ -1,10 +1,9 @@
-var fs = require('fs');
-var Promise = require('bluebird');
-var async = require('async');
+import fs from 'fs';
+import Promise from 'bluebird';
+
 
 var readFile = Promise.promisify(fs.readFile);
 var readdir = Promise.promisify(fs.readdir);
-var asyncEach = Promise.promisify(async.each);
 
 	readFile('configuration.JSON', 'utf8')
 	.then(data => JSON.parse(data))
