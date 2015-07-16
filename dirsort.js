@@ -1,43 +1,44 @@
 import fs from 'fs';
 import Promise from 'bluebird';
+import path from 'path';
 
 
 var readFile = Promise.promisify(fs.readFile);
 var readdir = Promise.promisify(fs.readdir);
+var rename = Promise.promisify(fs.rename);
 
 	readFile('configuration.JSON', 'utf8')
 	.then(data => JSON.parse(data))
 	.each(
 		task => {
-		readdir(task.path)
-		.then(files => files.every(file => 
+		setInterval(() => {
+			
+		console.log("Getting path from %s to %s", task.path, __dirname);
+		console.log(path.relative(__dirname, task.path));
+
+
+		readdir(path.relative(__dirname, task.path))
+		.then(files => files.forEach(file => 
 			{ 
 				if(testFile(task.path, task.matchAll, task.rules,file)) {
 					events[task.event.type](task.path, file, task.event.path);
 				}
-			}));
+			}))}, task.interval);
 		}
 	).each(function(files) {
 		//console.log("files:");
 		//console.log(files);
-	}).catch(function(err) {
+	}).catch(err => {
 		throw new Error(err);
 	});
 
 function testFile(dir, matchAll, rules, file) {
 
-	let nrOfMatches,
+	let nrOfMatches = matchAll ? rules.length : 1,
 			matches = 0;
 
-	if(matchAll) {
-		nrOfMatches = rules.length;
-	} else {
-		nrOfMatches = 1;
-	}
-
-
 	for(let i = 0; i < rules.length; i++) {
-		if(verifiers[rules[i].verifier](file, rules[i].type, rules[i].reference)) {
+		if(file.indexOf('.') >= 0 && verifiers[rules[i].verifier](file, rules[i].type, rules[i].reference)) {
 			console.log("%s passed test '%s' with type: %s, reference: %s", file, rules[i].verifier, rules[i].type, rules[i].reference);
 			matches++;
 		} else {
@@ -45,11 +46,9 @@ function testFile(dir, matchAll, rules, file) {
 		}
 	}
 
-	if(matches === nrOfMatches) {
-		return true;
-	} else {
-		return false;
-	}
+	let pass = (matches === nrOfMatches) ? true : false;
+
+	return pass;
 }
 
 
@@ -76,7 +75,18 @@ const verifiers = {
 
 const events = {
 	move: (originalFolder, file, folder) => {
-		console.log('moved file "%s" from %s to %s', file, originalFolder, folder);
+
+		let pathToOldFolder = path.relative(__dirname, originalFolder)+'/'+file;
+		let pathToNewFolderFromOld = path.relative(__dirname, folder)+'/'+file;
+
+		rename(path.relative(__dirname, originalFolder)+'/'+file, path.relative(__dirname, folder)+'/'+file)
+		.then(() => {
+			console.log('moved file "%s" from %s to %s', file, pathToOldFolder, pathToNewFolderFromOld);
+		})
+		.catch((err) => {
+			console.log('Could not move file "%s" from %s to %s', file, pathToOldFolder, pathToNewFolderFromOld);
+			throw new Error(err);
+		});
 		/*let source = fs.createReadStream(originalFolder+file),
 				dest = fs.createWriteStream(folder+file);
 		source.pipe(dest);
