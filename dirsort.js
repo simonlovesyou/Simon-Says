@@ -21,7 +21,7 @@ var rename = Promise.promisify(fs.rename);
 		.then(files => files.forEach(file => 
 			{ 
 				if(testFile(task.path, task.matchAll, task.rules,file)) {
-					events[task.event.type](task.path, file, task.event.path);
+					events[task.event.type](task, file);
 				}
 			}))}, task.interval);
 		}
@@ -74,22 +74,32 @@ const verifiers = {
 }
 
 const events = {
-	move: (originalFolder, file, folder) => {
+	move: (task, file) => {
 
-		let pathToOldFolder = path.relative(__dirname, originalFolder)+'/'+file;
-		let pathToNewFolderFromOld = path.relative(__dirname, folder)+'/'+file;
+		let origin = path.relative(__dirname, task.path)+'/'+file
+		let dest = path.relative(__dirname, task.event.path)+'/'+file
 
-		rename(path.relative(__dirname, originalFolder)+'/'+file, path.relative(__dirname, folder)+'/'+file)
+		rename(origin, dest)
 		.then(() => {
-			console.log('moved file "%s" from %s to %s', file, pathToOldFolder, pathToNewFolderFromOld);
+			console.log('moved file "%s" from %s to %s', file, origin, dest);
 		})
 		.catch((err) => {
 			console.log('Could not move file "%s" from %s to %s', file, pathToOldFolder, pathToNewFolderFromOld);
 			throw new Error(err);
 		});
-		/*let source = fs.createReadStream(originalFolder+file),
-				dest = fs.createWriteStream(folder+file);
-		source.pipe(dest);
-		source.on*/
+	},
+	rename: (task, file) => {
+
+		let origin = path.relative(__dirname, task.path)+'/'+file
+		let newName = path.relative(__dirname, task.path)+'/'+task.event.newName;
+
+		rename(origin, newName)
+		.then(() => {
+			console.log('renamed file "%s" from %s to %s', file, origin, newName);
+		})
+		.catch((err) => {
+			console.log('Could not move file "%s" from %s to %s', file, origin, newName);
+			throw new Error(err);
+		});
 	}
-}
+};
