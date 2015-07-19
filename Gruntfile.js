@@ -7,14 +7,14 @@ module.exports = function(grunt) {
 	    },
 	    dist: {
 	      files: {
-	        "index_c.js": "index.js",
-	        "dirsort_c.js": "logic.js"
+	        "dist/index.js": "modules/index.js",
+	        "dist/logic.js": "modules/logic.js"
 	      }
 	    }
 	  },
 	  watch: {
 	  	babel: {
-	  		files: ['./logic.js', './index.js'],
+	  		files: ['./modules/*.js'],
 	  		tasks: ['babel'],
 	  		options: {
           spawn: false,
