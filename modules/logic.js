@@ -3,10 +3,11 @@ import Promise from 'bluebird';
 import path from 'path';
 
 
-let readFile = Promise.promisify(fs.readFile);
-let writeFile = Promise.promisify(fs.writeFile);
-let readdir = Promise.promisify(fs.readdir);
-let rename = Promise.promisify(fs.rename);
+let readFile = Promise.promisify(fs.readFile),
+		writeFile = Promise.promisify(fs.writeFile),
+		readdir = Promise.promisify(fs.readdir),
+		rename = Promise.promisify(fs.rename),
+		appendFile = Promise.promisify(fs.appendFile);
 
 let config;
 
@@ -50,29 +51,7 @@ let start = (cb => {
 		
 		}
 
-		/*directory => {
-		//console.log("Getting path from %s to %s", task.path, __dirname);
-		//console.log(path.join('..', path.relative(__dirname, task.path)));
-		console.log("dirr: %s", __dirname);
-		console.log(directory);
 
-		console.log("lol: " + path.join(directory.folder.path, directory.folder.name));
-		readdir(path.relative(__dirname +'/..', path.join(directory.folder.path, directory.folder.name))
-		.then(files => {console.log("Hej");console.log(files);files.forEach(file => 
-			{ 
-				console.log("KOMMER IN HIT");
-				var fullPath = path.join(directory.folder.path, directory.folder.name);
-				directory.forEach(task => {
-					console.log("directory:");
-					console.log(directory);
-					console.log("task:");
-					console.log(task);
-					if(testFile(fullPath, task.matchAll, task.rules,file)) {
-						events[task.event.type](task, file);
-					}		
-				});
-
-			}))*/
 	).each(function(files) {
 		//console.log("files:");
 		//console.log(files);
@@ -165,17 +144,22 @@ function log(task) {
 	                + currentdate.getMinutes() + ":" 
 	                + currentdate.getSeconds() + "]";
 
-	console.log(datetime);
+	let message = datetime + ' Task "'+task.name
+								+'" fired event "'+task.event.type
+								+'" inside folder "'+task.path
+								+'"\n';
 
-	let message = datetime + ' Task "'+task.name+'" fired event "'+task.event.type+'" inside folder '+task.path;
 
-	var fs = require('fs');
-	writeFile('history.log', message)
-	.catch(err => {throw err});
+	appendFile('history.log', message)
+	.catch(err => {throw new Error(err)});
 }
 
-//Expose start function
+//Expose
 module.exports = {
 	start,
 	config
 }
+
+
+
+
