@@ -17,8 +17,6 @@ http.createServer(app).listen('8151', () => {
   //console.log('Visit @ ' + config.DOMAIN);
 });
 
-console.log(dirsortjs);
-
 dirsortjs.start();
 
 
