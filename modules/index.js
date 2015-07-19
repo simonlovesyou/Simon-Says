@@ -43,7 +43,7 @@ dirsortjs.start(function(result, err) {
 app.get('/', function (req, res) {
   var json_string = {"action":"date +%s","result":"1367263074"};
   console.log("config:"+config);
-  res.render('layout', {layout : 'layout', tasks: config});
+  res.render('layout', {layout : 'layout', folders: config});
 })
 
 

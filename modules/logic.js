@@ -28,21 +28,51 @@ let start = (cb => {
 		return config;
 	})
 	.each(
-		task => {
-		setInterval(() => {
+		directory => {
+			console.log(directory);
+			console.log("Reading:");
+			console.log(path.relative(__dirname +'/..', path.join(directory.folder.path, directory.folder.name)));
+			readdir(path.relative(__dirname +'/..', path.join(directory.folder.path, directory.folder.name)))
+				.then(files => {
+					var fullPath = path.join(directory.folder.path, directory.folder.name);
+					console.log(fullPath);
+					files.forEach(file => {
+						directory.tasks.forEach(task => {
+							if(testFile(fullPath, task.matchAll, task.rules,file)) {
+								events[task.event.type](task, file);
+							};
+						});
+					})
+				})
+				.catch(err => {
+					throw new Error(err);
+				});
+		
+		}
+
+		/*directory => {
 		//console.log("Getting path from %s to %s", task.path, __dirname);
 		//console.log(path.join('..', path.relative(__dirname, task.path)));
 		console.log("dirr: %s", __dirname);
+		console.log(directory);
 
-
-		readdir(path.relative(__dirname +'/..', task.path))
-		.then(files => files.forEach(file => 
+		console.log("lol: " + path.join(directory.folder.path, directory.folder.name));
+		readdir(path.relative(__dirname +'/..', path.join(directory.folder.path, directory.folder.name))
+		.then(files => {console.log("Hej");console.log(files);files.forEach(file => 
 			{ 
-				if(testFile(task.path, task.matchAll, task.rules,file)) {
-					events[task.event.type](task, file);
-				}
-			}))}, task.interval);
-		}
+				console.log("KOMMER IN HIT");
+				var fullPath = path.join(directory.folder.path, directory.folder.name);
+				directory.forEach(task => {
+					console.log("directory:");
+					console.log(directory);
+					console.log("task:");
+					console.log(task);
+					if(testFile(fullPath, task.matchAll, task.rules,file)) {
+						events[task.event.type](task, file);
+					}		
+				});
+
+			}))*/
 	).each(function(files) {
 		//console.log("files:");
 		//console.log(files);
@@ -52,7 +82,7 @@ let start = (cb => {
 });
 
 function testFile(dir, matchAll, rules, file) {
-
+	console.log("inside tesfile");
 	let nrOfMatches = matchAll ? rules.length : 1,
 			matches = 0;
 
