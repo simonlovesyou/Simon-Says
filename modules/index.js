@@ -1,12 +1,13 @@
 import express from 'express';
 import bodyParser from 'body-parser'
-import dirsortjs from './logic_c'
+import dirsortjs from './logic'
 import path from 'path';
 import http from 'http';
+import Promise from 'bluebird';
 
 let app = express();
 
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'jade');
 
 app.use(bodyParser.json());
@@ -17,6 +18,38 @@ http.createServer(app).listen('8151', () => {
   //console.log('Visit @ ' + config.DOMAIN);
 });
 
-dirsortjs.start();
+//Promise.promisifyAll(dirsortjs);
+console.log(dirsortjs.start);
 
+//let start = Promise.promisify(dirsortjs.start);
+let config;
+
+/*start().then(result => {
+	console.log("result:"+result);
+	config = result;
+})
+.catch((err) => {throw new Error(err);console.log(err); config = err});*/
+
+dirsortjs.start(function(result, err) {
+	if(err)
+		throw Error(err);
+	console.log("result:");
+	console.log(result);
+	config = result;
+
+});
+
+
+app.get('/', function (req, res) {
+  var json_string = {"action":"date +%s","result":"1367263074"};
+  console.log("config:"+config);
+  res.render('layout', {layout : 'layout', tasks: config});
+})
+
+
+
+process.on('uncaughtException', function (er) {
+  console.error(er.stack)
+  process.exit(1)
+})
 

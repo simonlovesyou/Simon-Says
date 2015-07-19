@@ -1,0 +1,17 @@
+each task in tasks
+	h2= task.name
+	p= task.path
+	p= task.description
+	p Match all: #{task.matchAll}
+	p Refresh interval: #{task.interval}
+	h3 Rules:
+	each rule in task.rules
+		ul
+			p Type of rule: #{rule.type}
+			p Verifier: #{rule.verifier}
+			p Reference: #{rule.reference}
+	h3 Event
+	p Type of event: #{task.event.type}
+	if task.event.type == 'rename'
+		p Rename to: #{task.event.newName}
+

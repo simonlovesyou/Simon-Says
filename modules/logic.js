@@ -3,24 +3,39 @@ import Promise from 'bluebird';
 import path from 'path';
 
 
-var readFile = Promise.promisify(fs.readFile);
-var writeFile = Promise.promisify(fs.writeFile);
-var readdir = Promise.promisify(fs.readdir);
-var rename = Promise.promisify(fs.rename);
+let readFile = Promise.promisify(fs.readFile);
+let writeFile = Promise.promisify(fs.writeFile);
+let readdir = Promise.promisify(fs.readdir);
+let rename = Promise.promisify(fs.rename);
 
-let start = (() => {
+let config;
+
+let start = (cb => {
 
 	readFile('configuration.JSON', 'utf8')
 	.then(data => JSON.parse(data))
+	.then(config => {
+		if(typeof cb === 'function') {
+			if(config) {
+				console.log("Calling callback with:");
+				console.log(config);
+				cb(config);
+			} else {
+				console.log("Throwing error");
+				cb(null, new Error("Could not read file."));
+			}
+		}
+		return config;
+	})
 	.each(
 		task => {
 		setInterval(() => {
-			
-		console.log("Getting path from %s to %s", task.path, __dirname);
-		console.log(path.relative(__dirname, task.path));
+		//console.log("Getting path from %s to %s", task.path, __dirname);
+		//console.log(path.join('..', path.relative(__dirname, task.path)));
+		console.log("dirr: %s", __dirname);
 
 
-		readdir(path.relative(__dirname, task.path))
+		readdir(path.relative(__dirname +'/..', task.path))
 		.then(files => files.forEach(file => 
 			{ 
 				if(testFile(task.path, task.matchAll, task.rules,file)) {
@@ -80,8 +95,8 @@ const verifiers = {
 const events = {
 	move: (task, file) => {
 
-		let origin = path.relative(__dirname, task.path)+'/'+file
-		let dest = path.relative(__dirname, task.event.path)+'/'+file
+		let origin = path.relative(__dirname+'/..', task.path)+'/'+file
+		let dest = path.relative(__dirname+'/..', task.event.path)+'/'+file
 
 		rename(origin, dest)
 		.then(() => {
@@ -95,8 +110,8 @@ const events = {
 	},
 	rename: (task, file) => {
 
-		let origin = path.relative(__dirname, task.path)+'/'+file
-		let newName = path.relative(__dirname, task.path)+'/'+task.event.newName;
+		let origin = path.relative(__dirname+'/..', task.path)+'/'+file
+		let newName = path.relative(__dirname+'/..', task.path)+'/'+task.event.newName;
 
 		rename(origin, newName)
 		.then(() => {
@@ -104,7 +119,7 @@ const events = {
 			console.log('renamed file "%s" from %s to %s', file, origin, newName);
 		})
 		.catch((err) => {
-			console.log('Could not move file "%s" from %s to %s', file, origin, newName);
+			console.log('Could not rename file "%s" from %s to %s', file, origin, newName);
 			throw new Error(err);
 		});
 	}
@@ -129,6 +144,8 @@ function log(task) {
 	.catch(err => {throw err});
 }
 
+//Expose start function
 module.exports = {
-	start
+	start,
+	config
 }
