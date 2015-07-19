@@ -9,6 +9,10 @@ let app = express();
 
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'jade');
+app.set('view options', {
+	layout: false
+});
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -43,7 +47,7 @@ dirsortjs.start(function(result, err) {
 app.get('/', function (req, res) {
   var json_string = {"action":"date +%s","result":"1367263074"};
   console.log("config:"+config);
-  res.render('layout', {layout : 'layout', folders: config});
+  res.render('content', {layout : 'layout', folders: config});
 })
 
 
