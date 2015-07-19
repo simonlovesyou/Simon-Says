@@ -4,8 +4,11 @@ import path from 'path';
 
 
 var readFile = Promise.promisify(fs.readFile);
+var writeFile = Promise.promisify(fs.writeFile);
 var readdir = Promise.promisify(fs.readdir);
 var rename = Promise.promisify(fs.rename);
+
+let start = (() => {
 
 	readFile('configuration.JSON', 'utf8')
 	.then(data => JSON.parse(data))
@@ -31,6 +34,7 @@ var rename = Promise.promisify(fs.rename);
 	}).catch(err => {
 		throw new Error(err);
 	});
+});
 
 function testFile(dir, matchAll, rules, file) {
 
@@ -81,6 +85,7 @@ const events = {
 
 		rename(origin, dest)
 		.then(() => {
+			log(task);
 			console.log('moved file "%s" from %s to %s', file, origin, dest);
 		})
 		.catch((err) => {
@@ -95,6 +100,7 @@ const events = {
 
 		rename(origin, newName)
 		.then(() => {
+			log(task);
 			console.log('renamed file "%s" from %s to %s', file, origin, newName);
 		})
 		.catch((err) => {
@@ -103,3 +109,26 @@ const events = {
 		});
 	}
 };
+
+function log(task) {
+
+	var currentdate = new Date(); 
+	var datetime = "[" + currentdate.getFullYear() + "/"
+	                + (currentdate.getMonth()+1)  + "/" 
+	                + currentdate.getDate() + " "  
+	                + currentdate.getHours() + ":"  
+	                + currentdate.getMinutes() + ":" 
+	                + currentdate.getSeconds() + "]";
+
+	console.log(datetime);
+
+	let message = datetime + ' Task "'+task.name+'" fired event "'+task.event.type+'" inside folder '+task.path;
+
+	var fs = require('fs');
+	writeFile('history.log', message)
+	.catch(err => {throw err});
+}
+
+module.exports = {
+	start
+}
