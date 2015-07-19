@@ -7,11 +7,10 @@ let readFile = Promise.promisify(fs.readFile),
 		writeFile = Promise.promisify(fs.writeFile),
 		readdir = Promise.promisify(fs.readdir),
 		rename = Promise.promisify(fs.rename),
-		appendFile = Promise.promisify(fs.appendFile);
+		appendFile = Promise.promisify(fs.appendFile),
+		config;
 
-let config;
-
-let start = (cb => {
+const start = (cb => {
 
 	readFile('configuration.JSON', 'utf8')
 	.then(data => JSON.parse(data))
@@ -74,7 +73,7 @@ function testFile(dir, matchAll, rules, file) {
 		}
 	}
 
-	let pass = (matches === nrOfMatches) ? true : false;
+	let pass = (matches === nrOfMatches);
 
 	return pass;
 }
@@ -104,8 +103,8 @@ const verifiers = {
 const events = {
 	move: (task, file) => {
 
-		let origin = path.relative(__dirname+'/..', task.path)+'/'+file
-		let dest = path.relative(__dirname+'/..', task.event.path)+'/'+file
+		let origin = path.relative(__dirname+'/..', task.path)+'/'+file,
+				dest = path.relative(__dirname+'/..', task.event.path)+'/'+file
 
 		rename(origin, dest)
 		.then(() => {
@@ -119,8 +118,8 @@ const events = {
 	},
 	rename: (task, file) => {
 
-		let origin = path.relative(__dirname+'/..', task.path)+'/'+file
-		let newName = path.relative(__dirname+'/..', task.path)+'/'+task.event.newName;
+		let origin = path.relative(__dirname+'/..', task.path)+'/'+file,
+				newName = path.relative(__dirname+'/..', task.path)+'/'+task.event.newName;
 
 		rename(origin, newName)
 		.then(() => {
