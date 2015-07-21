@@ -1,49 +1,86 @@
 # dirsortjs
-A filesystem directory sorter that will sort the contents of a folder dependent on user specified rules.
+ 
 
-This is a work in progress so any feature may change during implementation, but core idea will not change.
+A powerful filesystem management tool built with Node.js. Have dirsortjs watch a folder quietly in the background and it will organize the contents for you based on the rules you give it.
+ 
 
-(WIP)
+This is a **WIP**, please see Features list on what’s to come and what’s already implemented.
+ 
 
 ## Usage
+ 
 
 ``` Coming soon ```
+ 
 
-## Idea / Features
+## Features
+ 
 
-Configure dirsortjs in configuration.json. Specify what folders you want sorted and at what interval you want dirsortjs to try and and sort that directory. 
+Choose any folder directory and give it a *rule* and an *event*, either using the CLI or the web interface.
 
-Rules determine what files it will fire an event for. It can check:
+### Rules
 
-- Filename (done)
-- File extension (done)
-- File created at (WIP)
-- File last edited (date)
-- File last opened 
+*Rules* determine what files it will fire an event for. The following parameters are supported:
+ 
 
-Match these by a validator:
+- Filename
+- File extension
+ 
 
-- Match (Equals) (Done)
-- Contains (Done)
-- RegEX match (WIP)
+(WIP):
+ 
+- Date added
+- Date created
+- Date last modified
+- Date last opened
+- Size
+- Parent folder
+ 
+### Validator
 
-And fire an event:
+**Match** these parameters by a validator. The following validators are supported:
+ 
+#### Filename and extension
+- is
+- contains
 
-- Move to a folder (done)
+(WIP):
+
+- RegEX match
+- starts with
+
+(Note: the above will have corresponding negative validators aswell, e.g *is not*, *does not contain* and so forth)
+
+#### Date
+(WIP):
+
+- is
+- is before
+- is after
+- is within
+
+(Note: the above will have corresponding negative validators aswell, e.g *is not*, *is not before* and so forth)
+
+### Events
+
+If a file inside of the directory obeys a rule it will fire an **event** for that file. The following events are supported:
+ 
+- Move to a folder
 - Rename
+
+(WIP):
+
+- Copy
 - Delete
 - Change extension
-
-
-## Example 
-
-``` Coming soon ```
-
+- Create and sort to subfolder
+- Upload
+- Crypt
+- Encrypt
 
 ## Authors
 
 simonlovesyou
-
+ 
 ## License
 MIT-license. Please see LICENSE.txt
-
