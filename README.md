@@ -75,7 +75,6 @@ If a file inside of the directory obeys a rule it will fire an **event** for tha
 - Change extension
 - Create and sort to subfolder
 - Upload
-- Crypt
 - Encrypt
 
 ## Authors
