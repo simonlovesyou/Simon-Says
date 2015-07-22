@@ -8,6 +8,7 @@ let readFile = Promise.promisify(fs.readFile),
 		readdir = Promise.promisify(fs.readdir),
 		rename = Promise.promisify(fs.rename),
 		appendFile = Promise.promisify(fs.appendFile),
+		stat = Promise.promisify(fs.stat),
 		config;
 
 const start = (cb => {
@@ -130,6 +131,27 @@ const events = {
 			console.log('Could not rename file "%s" from %s to %s', file, origin, newName);
 			throw new Error(err);
 		});
+	},
+	copy: (task, file) => {
+		let parts = file.split('.');
+		let origin = path.relative(__dirname+'/..', task.path)+'/'+file,
+				dest = task.event.copyName 
+					? path.relative(__dirname+'/..', task.path)+'/'+task.event.copyName+"."+parts[1] 
+					: path.relative(__dirname+'/..', task.path)+"/"+parts[0]+" copy."+parts[1];
+
+		let rs = fs.createReadStream(origin),
+				ws = fs.createWriteStream(dest);
+
+		rs.pipe(ws);
+		rs.on('error', function(err) {
+			throw new Exception(err);
+		});
+		ws.on('error', err => {
+			throw new Exception(err);
+		})
+		rs.on('close', () => (console.log("Done reading original file.")));
+		ws.on('finish', () => (console.log("Done writing to copy.")))
+
 	}
 };
 
