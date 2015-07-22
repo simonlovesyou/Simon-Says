@@ -67,10 +67,10 @@ If a file inside of the directory obeys a rule it will fire an **event** for tha
  
 - Move to a folder
 - Rename
+- Copy
 
 (WIP):
 
-- Copy
 - Delete
 - Change extension
 - Create and sort to subfolder
