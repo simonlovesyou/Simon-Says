@@ -1,6 +1,7 @@
 import fs from 'fs';
 import Promise from 'bluebird';
 import path from 'path';
+import async from 'async';
 
 
 let readFile = Promise.promisify(fs.readFile),
@@ -9,6 +10,7 @@ let readFile = Promise.promisify(fs.readFile),
 		rename = Promise.promisify(fs.rename),
 		appendFile = Promise.promisify(fs.appendFile),
 		stat = Promise.promisify(fs.stat),
+		asyncP = Promise.promisifyAll(async),
 		config;
 
 const start = (cb => {
@@ -32,15 +34,17 @@ const start = (cb => {
 		directory => {
 			console.log(directory);
 			console.log("Reading:");
+			console.log("opt:"+path.join(directory.folder.path, directory.folder.name));
+			console.log(path.isAbsolute(directory.folder.path));
 			console.log(path.relative(__dirname +'/..', path.join(directory.folder.path, directory.folder.name)));
-			readdir(path.relative(__dirname +'/..', path.join(directory.folder.path, directory.folder.name)))
+			readdir(path.join(directory.folder.path, directory.folder.name))
 				.then(files => {
 					var fullPath = path.join(directory.folder.path, directory.folder.name);
 					console.log(fullPath);
 					files.forEach(file => {
 						directory.tasks.forEach(task => {
 							if(testFile(fullPath, task.matchAll, task.rules,file)) {
-								events[task.event.type](task, file);
+								events[task.event.type](task, file, fullPath);
 							};
 						});
 					})
@@ -132,15 +136,20 @@ const events = {
 			throw new Error(err);
 		});
 	},
-	copy: (task, file) => {
+	copy: (task, file, fullPath) => {
 		let parts = file.split('.');
-		let origin = path.relative(__dirname+'/..', task.path)+'/'+file,
+		console.log(fullPath);
+		let origin = path.join(fullPath,file),
 				dest = task.event.copyName 
-					? path.relative(__dirname+'/..', task.path)+'/'+task.event.copyName+"."+parts[1] 
-					: path.relative(__dirname+'/..', task.path)+"/"+parts[0]+" copy."+parts[1];
+					? path.join(fullPath, path.join(task.event.copyName+path.extname(file))) 
+					: path.join(fullPath, path.join(path.parse(file).name+" (2)"+path.extname(file)));
 
 		let rs = fs.createReadStream(origin),
 				ws = fs.createWriteStream(dest);
+
+		console.log(path.isAbsolute(origin));
+		console.log(origin);
+		console.log("dest: "+dest);
 
 		rs.pipe(ws);
 		rs.on('error', function(err) {
