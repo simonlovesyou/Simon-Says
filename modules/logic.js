@@ -106,10 +106,10 @@ const verifiers = {
 }
 
 const events = {
-	move: (task, file) => {
+	move: (task, file, fullPath) => {
 
-		let origin = path.relative(__dirname+'/..', task.path)+'/'+file,
-				dest = path.relative(__dirname+'/..', task.event.path)+'/'+file
+		let origin = path.join(fullPath,file),
+				dest = path.join(task.event.path,file);
 
 		rename(origin, dest)
 		.then(() => {
@@ -121,10 +121,10 @@ const events = {
 			throw new Error(err);
 		});
 	},
-	rename: (task, file) => {
+	rename: (task, file, fullPath) => {
 
-		let origin = path.relative(__dirname+'/..', task.path)+'/'+file,
-				newName = path.relative(__dirname+'/..', task.path)+'/'+task.event.newName;
+		let origin = path.join(fullPath,file),
+				newName = path.join(fullPath,task.event.newName+path.parse(file).ext);
 
 		rename(origin, newName)
 		.then(() => {
