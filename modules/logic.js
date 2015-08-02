@@ -151,8 +151,8 @@ const events = {
     });
   },
   copy: (task, file, fullPath) => {
+
     let parts = file.split('.');
-    console.log(fullPath);
     let origin = path.join(fullPath,file),
         dest = task.event.copyName
           ? path.join(fullPath, path.join(task.event.copyName+path.extname(file)))
@@ -160,10 +160,6 @@ const events = {
 
     let rs = fs.createReadStream(origin),
         ws = fs.createWriteStream(dest);
-
-    console.log(path.isAbsolute(origin));
-    console.log(origin);
-    console.log('dest: ' + dest);
 
     rs.pipe(ws);
     rs.on('error', function(err) {
