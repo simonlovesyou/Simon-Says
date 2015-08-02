@@ -2,6 +2,7 @@ import fs from 'fs';
 import Promise from 'bluebird';
 import path from 'path';
 import async from 'async';
+import pathExists from 'path-exists';
 
 
 let readFile = Promise.promisify(fs.readFile),
@@ -11,6 +12,8 @@ let readFile = Promise.promisify(fs.readFile),
     appendFile = Promise.promisify(fs.appendFile),
     stat = Promise.promisify(fs.stat),
     asyncP = Promise.promisifyAll(async),
+    exists = Promise.promisify(pathExists),
+    unlink = Promise.promisify(fs.unlink),
     config;
 
 const start = cb => {
@@ -34,7 +37,7 @@ const start = cb => {
     directory => {
       console.log(directory);
       console.log('Reading:');
-      console.log('opt:'+path.join(directory.folder.path, directory.folder.name));
+      console.log('opt:'+ path.join(directory.folder.path, directory.folder.name));
       console.log(path.isAbsolute(directory.folder.path));
       console.log(path.relative(__dirname +'/..', path.join(directory.folder.path, directory.folder.name)));
       readdir(path.join(directory.folder.path, directory.folder.name))
@@ -148,7 +151,7 @@ const events = {
 
     console.log(path.isAbsolute(origin));
     console.log(origin);
-    console.log('dest: '+dest);
+    console.log('dest: ' + dest);
 
     rs.pipe(ws);
     rs.on('error', function(err) {
@@ -159,7 +162,16 @@ const events = {
     })
     rs.on('close', () => (console.log('Done reading original file.')));
     ws.on('finish', () => (console.log('Done writing to copy.')))
+  },
+  delete: (task, file, fullPath) => {
+    let filePath = path.join(fullPath, file);
 
+    unlink(filePath).then(() => {
+      log(task);
+    })
+    .catch(error => {
+      throw new Error(err);
+    });
   }
 };
 
