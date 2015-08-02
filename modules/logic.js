@@ -87,27 +87,39 @@ function testFile(dir, matchAll, rules, file) {
 
 
 const verifiers = {
-  match: (file, type, reference) => {
-    let parts = file.split('.');
+
+  equals: (file, type, reference) => {
     if(type === 'extension') {
-      return parts[1] === reference
+      return path.parse(file).ext === reference;
+    } else if(type === 'name') {
+      return path.parse(file).name === reference;
     }
-    if(type === 'name') {
-      return parts[0] === reference
+  },
+  doesNotEquals: (file, type, reference) => {
+    if(type === 'extension') {
+      return path.parse(file).ext !== reference;
+    } else if(type === 'name') {
+      return path.parse(file).name !== reference;
     }
   },
   contains: (file, type, reference) => {
-    let parts = file.split('.');
     if(type === 'extension') {
-      return (parts[1].indexOf(reference) >= 0)
+      return (path.parse(file).ext.indexOf(reference) >== 0)
+    } else if(type === 'name') {
+      return (path.parse(file).name.indexOf(reference) >== 0)
     }
-    if(type === 'name') {
-      return (parts[0].indexOf(reference) >= 0)
+  }
+  doesNotContain: (file, type, reference) => {
+    if(type === 'extension') {
+      return (path.parse(file).ext.indexOf(reference) === -1)
+    } else if(type === 'name') {
+      return (path.parse(file).name.indexOf(reference) === -1)
     }
   }
 }
 
 const events = {
+
   move: (task, file, fullPath) => {
 
     let origin = path.join(fullPath,file),
