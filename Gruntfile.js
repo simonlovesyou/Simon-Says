@@ -20,12 +20,16 @@ module.exports = function(grunt) {
           spawn: false,
         },
 	  	}
+	  },
+	  eslint: {
+	  	target: ['./modules/*.js']
 	  }
 	});
 
+	grunt.loadNpmTasks('grunt-eslint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-babel');
-	grunt.registerTask("default", ["babel", "watch"]);
+	grunt.registerTask("default", ["babel", "eslint", "watch"]);
 
 
 };
