@@ -47,7 +47,7 @@ const start = cb => {
           files.forEach(file => {
             directory.tasks.forEach(task => {
               if(testFile(fullPath, task.matchAll, task.rules,file)) {
-                events[task.event.type](task, file, fullPath);
+                events[task.events[0].type](task, file, fullPath);
               }
             });
           })
@@ -104,11 +104,11 @@ const verifiers = {
   },
   contains: (file, type, reference) => {
     if(type === 'extension') {
-      return (path.parse(file).ext.indexOf(reference) >== 0)
+      return (path.parse(file).ext.indexOf(reference) >= 0)
     } else if(type === 'name') {
-      return (path.parse(file).name.indexOf(reference) >== 0)
+      return (path.parse(file).name.indexOf(reference) >= 0)
     }
-  }
+  },
   doesNotContain: (file, type, reference) => {
     if(type === 'extension') {
       return (path.parse(file).ext.indexOf(reference) === -1)
@@ -123,27 +123,35 @@ const events = {
   move: (task, file, fullPath) => {
 
     let origin = path.join(fullPath,file),
-        dest = path.join(task.event.path,file);
+        dest = path.join(task.events[0].path,file);
 
     rename(origin, dest)
     .then(() => {
       log(task);
       console.log('moved file "%s" from %s to %s', file, origin, dest);
+      if(task.events.length > 1) {
+        task.events.splice(0,1);
+        events[task.events[0].type](task, file, fullPath);      
+      }
     })
     .catch((err) => {
       console.log('Could not move file "%s" from %s to %s', file, pathToOldFolder, pathToNewFolderFromOld);
       throw new Error(err);
-    });
+    }); 
   },
   rename: (task, file, fullPath) => {
 
     let origin = path.join(fullPath,file),
-        newName = path.join(fullPath,task.event.newName+path.parse(file).ext);
+        newName = path.join(fullPath,task.event[0].newName+path.parse(file).ext);
 
     rename(origin, newName)
     .then(() => {
       log(task);
       console.log('renamed file "%s" from %s to %s', file, origin, newName);
+      if(task.events.length > 1) {
+        task.events.splice(0,1);
+        events[task.events[0].type](task, file, fullPath);      
+      }
     })
     .catch((err) => {
       console.log('Could not rename file "%s" from %s to %s', file, origin, newName);
@@ -154,8 +162,8 @@ const events = {
 
     let parts = file.split('.');
     let origin = path.join(fullPath,file),
-        dest = task.event.copyName
-          ? path.join(fullPath, path.join(task.event.copyName+path.extname(file)))
+        dest = task.events[0].copyName
+          ? path.join(fullPath, path.join(task.events[0].copyName+path.extname(file)))
           : path.join(fullPath, path.join(path.parse(file).name+' (2)'+path.extname(file)));
 
     let rs = fs.createReadStream(origin),
@@ -168,35 +176,44 @@ const events = {
     ws.on('error', err => {
       throw new Exception(err);
     })
-    rs.on('close', () => (console.log('Done reading original file.')));
-    ws.on('finish', () => (console.log('Done writing to copy.')))
+    rs.on('close', () => {
+      if(task.events.length > 1) {
+        task.events.splice(0,1);
+        events[task.events[0].type](task, file, fullPath);      
+      }
+    });
+    ws.on('finish', () => {
+      console.log('Done writing to copy.');
+    });
+
   },
   delete: (task, file, fullPath) => {
     let filePath = path.join(fullPath, file);
 
     unlink(filePath).then(() => {
       log(task);
+      if(task.events.length > 1) {
+        task.events.splice(0,1);
+        events[task.events[0].type](task, file, fullPath);      
+      }
     })
-    .catch(error => {
+    .catch(err => {
       throw new Error(err);
     });
   }
 };
 
 function log(task) {
+  let currentDate = new Date(),
+      datetime = '[' + currentDate.getFullYear() + '/' +
+                  (currentDate.getMonth()+1) + '/' +
+                  currentDate.getDate() + ' ' +
+                  currentDate.getHours() + ':' +
+                  currentDate.getMinutes() + ':' +
+                  currentDate.getSeconds() + ']';
 
-  let currentdate = new Date(),
-      datetime = '[' + currentdate.getFullYear() + '/' +
-                  (currentdate.getMonth()+1) + '/' +
-                  currentdate.getDate() + ' ' +
-                  currentdate.getHours() + ':' +
-                  currentdate.getMinutes() + ':' +
-                  currentdate.getSeconds() + ']';
-
-  let message = datetime + ' Task ' + task.name +
-                ' fired event '+ task.event.type +
-                ' inside folder ' + task.path +
-                '\n';
+  let message = datetime + ' Task "' + task.name +
+                '"" fired event "'+ task.events[0].type + '"\n';
 
 
   appendFile('history.log', message)
