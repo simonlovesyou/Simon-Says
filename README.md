@@ -16,11 +16,11 @@ This is a **WIP**, please see Features list on what’s to come and what’s alr
 ## Features
  
 
-Choose any folder directory and give it a *rule* and an *event*, either using the CLI or the web interface.
+Choose any folder directory and give it a *rule* and a chain of *events*.
 
 ### Rules
 
-*Rules* determine what files it will fire an event for. The following parameters are supported:
+*Rules* determine what files it will fire the event chain for. The following parameters are supported:
  
 
 - Filename
@@ -68,10 +68,10 @@ If a file inside of the directory obeys a rule it will fire an **event** for tha
 - Move to a folder
 - Rename
 - Copy
+- Delete
 
 (WIP):
 
-- Delete
 - Change extension
 - Create and sort to subfolder
 - Upload
