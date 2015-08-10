@@ -1,3 +1,15 @@
+import path from 'path';
+import fs from 'fs';
+import Promise from 'bluebird';
+
+let readFile = Promise.promisify(fs.readFile),
+    writeFile = Promise.promisify(fs.writeFile),
+    readdir = Promise.promisify(fs.readdir),
+    rename = Promise.promisify(fs.rename),
+    appendFile = Promise.promisify(fs.appendFile),
+    stat = Promise.promisify(fs.stat),
+    unlink = Promise.promisify(fs.unlink);
+
 const events = {
 
   move: (task, file, fullPath) => {
@@ -39,7 +51,6 @@ const events = {
     });
   },
   copy: (task, file, fullPath) => {
-    console.log('Inside copy!');
     let parts = file.split('.');
     let origin = path.join(fullPath,file),
         dest = task.events[0].copyName
