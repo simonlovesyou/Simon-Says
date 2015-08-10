@@ -69,6 +69,7 @@ If a file inside of the directory obeys a rule it will fire an **event** for tha
 - Rename
 - Copy
 - Delete
+- Wait
 
 (WIP):
 
@@ -76,7 +77,6 @@ If a file inside of the directory obeys a rule it will fire an **event** for tha
 - Create and sort to subfolder
 - Upload
 - Encrypt
-- Wait
 
 ## Authors
 
