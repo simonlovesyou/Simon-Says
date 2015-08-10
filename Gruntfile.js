@@ -6,10 +6,13 @@ module.exports = function(grunt) {
 	      sourceMap: true
 	    },
 	    dist: {
-	      files: {
-	        "dist/index.js": "modules/index.js",
-	        "dist/logic.js": "modules/logic.js"
-	      }
+	      files: [{
+          "expand": true,
+          "cwd": "modules/",
+          "src": ["**/*.js"],
+          "dest": "dist/",
+          "ext": ".js"
+	      }]
 	    }
 	  },
 	  watch: {
