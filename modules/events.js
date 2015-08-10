@@ -91,7 +91,35 @@ const events = {
     .catch(err => {
       throw new Error(err);
     });
+  },
+  wait: (task, file, fullPath) => {
+    setTimeout(() => {
+      log(task);
+      if(task.events.length > 1) {
+        task.events.splice(0,1);
+        events[task.events[0].type](task, file, fullPath);
+      }
+    }, task.events[0].time);
   }
 };
+
+function log(task) {
+  let currentDate = new Date(),
+      datetime = '[' + currentDate.getFullYear() + '/' +
+                  (currentDate.getMonth()+1) + '/' +
+                  currentDate.getDate() + ' ' +
+                  currentDate.getHours() + ':' +
+                  currentDate.getMinutes() + ':' +
+                  currentDate.getSeconds() + ']';
+
+  let message = datetime + ' Task "' + task.name +
+                '" fired event "'+ task.events[0].type + '"\n';
+
+
+  appendFile('history.log', message)
+  .catch(err => {throw new Error(err)});
+}
+
+
 
 module.exports = events
