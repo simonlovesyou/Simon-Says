@@ -27,7 +27,7 @@ const start = cb => {
   .then(config => {
     if(typeof cb === 'function') {
       if(config) {
-        console.log(config);
+        
         cb(config);
       } else {
         console.log('Throwing error');
