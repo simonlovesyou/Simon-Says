@@ -67,17 +67,11 @@ dirsortjs.start(function(result, err) {
   config = result;
 });
 
-
-app.get('/', function (req, res) {
-  var json_string = {'action': 'date +%s','result': '1367263074'};
-  console.log('config:'+config);
-  res.render('content', {layout: 'layout', folders: config});
-})
-
-
-
 process.on('uncaughtException', function (er) {
   console.error(er.stack)
   process.exit(1)
-})
+});
+
+// Expose app
+exports = module.exports = app;
 
