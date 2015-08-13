@@ -17,7 +17,7 @@ module.exports = function(grunt) {
 	  },
 	  watch: {
 	  	babel: {
-	  		files: ['./modules/*.js'],
+	  		files: ['./modules/**/*.js'],
 	  		tasks: ['babel'],
 	  		options: {
           spawn: false,
