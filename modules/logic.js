@@ -83,22 +83,6 @@ function testFile(dir, matchAll, rules, file) {
   return matches >= nrOfMatches;
 }
 
-function log(task) {
-  let currentDate = new Date(),
-      datetime = '[' + currentDate.getFullYear() + '/' +
-                  (currentDate.getMonth()+1) + '/' +
-                  currentDate.getDate() + ' ' +
-                  currentDate.getHours() + ':' +
-                  currentDate.getMinutes() + ':' +
-                  currentDate.getSeconds() + ']';
-
-  let message = datetime + ' Task "' + task.name +
-                '"" fired event "'+ task.events[0].type + '"\n';
-
-
-  appendFile('history.log', message)
-  .catch(err => {throw new Error(err)});
-}
 
 //Expose
 module.exports = {
