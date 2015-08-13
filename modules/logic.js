@@ -41,13 +41,12 @@ const start = cb => {
       console.log(directory);
       console.log('Reading:');
       console.log('opt:'+ path.join(directory.folder.path, directory.folder.name));
-      console.log(path.isAbsolute(directory.folder.path));
-      console.log(path.relative(__dirname +'/..', path.join(directory.folder.path, directory.folder.name)));
       readdir(path.join(directory.folder.path, directory.folder.name))
         .then(files => {
           var fullPath = path.join(directory.folder.path, directory.folder.name);
-          console.log(fullPath);
+          files = files || [];
           files.forEach(file => {
+            directory.tasks = directory.tasks || [];
             directory.tasks.forEach(task => {
               if(testFile(fullPath, task.matchAll, task.rules,file)) {
                 events[task.events[0].type](task, file, fullPath);
