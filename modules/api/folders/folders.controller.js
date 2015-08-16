@@ -16,11 +16,16 @@ const add = function (req, res) {
         .then(stats => {
           if(stats.isDirectory()) {
             saveToConfig(req.body.folder, function() {
-              res.sendStatus(200);
+              res.sendStatus(201);
             });
           } else {
-            res.sendStatus(400)
+            console.log("Skickar 420 1");
+            res.sendStatus(420);
           }
+        })
+        .error(err => {
+          console.log("Skickar 420 2");
+          res.sendStatus(420);
         })
       } 
 };
@@ -42,7 +47,8 @@ function saveToConfig(directory, cb) {
       if(err)
         console.log(err);
       cb();
-    });
+    }); 
+    cb();
   });
 }
 
