@@ -24,8 +24,9 @@ block content
 								li
 									p Reference: #{rule.reference}
 				h4 Event
-				p Type of event: #{task.event.type}
-				if task.event.type == 'rename'
-					p Rename to: #{task.event.newName}
-				if task.event.type == 'move'
-					p Move to: #{task.event.path}
+				each event in task.events
+					p Type of event: #{event.type}
+					if event.type == 'rename'
+						p Rename to: #{event.newName}
+					if event.type == 'move'
+						p Move to: #{event.path}
