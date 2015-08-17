@@ -1,0 +1,11 @@
+.active-folder {
+	background-color:lightblue;
+}
+
+.folder {
+	cursor:pointer;
+}
+
+#rulelist > li {
+	margin-top:15px;
+}
