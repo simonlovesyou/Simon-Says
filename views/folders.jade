@@ -44,6 +44,26 @@ block content
 								.row
 									.col-md-10
 										input(type="text" id="taskDescription" placeholder="Description").col-md-11
+								.row
+									.col-md-10
+										input(type="text" id="taskInterval" placeholder="Interval").col-md-11
+								.row
+									.col-md-9
+										span.col-md-2
+											p
+												| Match
+										select.col-md-4(id="taskMatch")
+											option(value="all") All
+											option(value="any") Any
+										span.col-md-4
+											p
+												| rule/s
+								.row
+									.col-md-3
+										button(role="button" id="addRule") Add rule
+								.row
+									ul(id="ruleList")
+
 						.row
 							.modal-footer
 								button.btn.btn-default(type="button" data-dismiss="modal") Close
@@ -54,7 +74,7 @@ block content
 					.container-fluid
 						.row
 							.modal-header
-								.button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+								.button.close(type="button" data-dismiss="modal" aria-label="Close")
 									span(aria-hidden="true") &times;
 								h4.modal-title(id="addFolderLabel") New Folder
 						.row
