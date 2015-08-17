@@ -28,32 +28,39 @@ $(document).ready(function() {
   });
 
   $('#taskSave').on('click', function() {
-    console.log("Jag trycks");
-    console.log($(index.folderList).children().find('.active-folder'));
+
     var folderName = $(index.folderList).children().find('.active-folder').find('h3').html();
     var folderPath = $(index.folderList).children().find('.active-folder').find('p').find('i').html();
-    console.log("Foldername: %s, folderpath: %s", folderName, folderPath);
+    var rules = [];
+    
+    $('#ruleList').children().each(function() {
+      var selects = $(this).find('select');
+      var self = this;
+
+      rules.push({
+        "type": $(selects[0]).val(),
+        "comparator": $(selects[1]).val(),
+        "reference": $(self).find('input').val();
+      });
+    });
+
+
     $.ajax({
       url: '/api/tasks/add',
       type: 'post',
+      dataType: 'json',
       data: {
         "folderName": folderName,
         "folderPath": folderPath,
         "taskName": $('#taskName').val(),
-        "taskDescription": $('#taskDescription').val()
+        "taskDescription": $('#taskDescription').val(),
+        "matchAll": $('#taskMatch').val() === 'All',
+        "interval": $('#taskInterval').val(),
+        "rules": JSON.stringify(rules)
       },
       statusCode: {
         200: function(res) {
-          console.log("Valid directory!");
-        },
-        201: function(res) {
-          console.log("Valid directory!");
-        },
-        400: function(res) {
-          console.log("Not a valid directory!");
-        },
-        420: function(res) {
-          console.log("Not a valid directory");
+          console.log("Task saved!");
         }
       }
     });
@@ -85,7 +92,7 @@ $(document).ready(function() {
               '<input type="text" placeholder="Match">'+
             '</li>'
             );
-    
+
     //Add eventlistener on each new delete button
     $('#ruleList').last().find('button').each(function() {
       $(this).on('click', function() {
