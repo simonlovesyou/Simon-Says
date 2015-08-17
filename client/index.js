@@ -65,6 +65,33 @@ $(document).ready(function() {
       $(this).siblings().find('div').removeClass('active-folder');
       $(this).find('div').addClass('active-folder');
     });
-  })
+  });
+
+  $('#addRule').on('click', function() {
+    console.log($('#ruleList'));
+    $('#ruleList')
+    .append('<li>'+
+              '<button role="button" class="pull-left btn btn-danger"> - </button>'+
+              '<select class="col-md-3">'+
+                '<option value="filename"> Filename </option>'+
+                '<option value="extension"> Extension </option>'+
+              '</select>'+
+              '<select class="col-md-3">'+
+                '<option value="equals"> Equals </option>'+
+                '<option value="contains"> Contains </option>'+
+                '<option value="doesNotEquals"> Does not equals </option>'+
+                '<option value="doesNotContain"> Does not contain </option>'+
+              '</select>'+
+              '<input type="text" placeholder="Match">'+
+            '</li>'
+            );
+    
+    //Add eventlistener on each new delete button
+    $('#ruleList').last().find('button').each(function() {
+      $(this).on('click', function() {
+        $(this).parent().remove();
+      })
+    })
+    });
 });
 
