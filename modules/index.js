@@ -57,6 +57,10 @@ app.get('/add/folder', function (req, res) {
 app.get('/client/index.js', function (req, res) {
 
   res.sendFile(path.join(__dirname, '../client/index.js'));
+})
+app.get('/client/main.css', function (req, res) {
+
+  res.sendFile(path.join(__dirname, '../client/main.css'));
 });
 
 
@@ -66,9 +70,6 @@ dirsortjs.start(function(result, err) {
   if(err) {
     throw Error(err);
   }
-  console.log('result:');
-  console.log(result);
-  config = result;
 });
 
 process.on('uncaughtException', function (er) {
