@@ -1,6 +1,7 @@
 import Promise from 'bluebird';
 import fs from 'fs';
 import path from 'path';
+import configHelper from '../configHelper.js'
 
 let stat = Promise.promisify(fs.stat),
     readFile = Promise.promisify(fs.readFile);
@@ -32,24 +33,23 @@ const add = function (req, res) {
 
 
 function saveToConfig(directory, cb) {
+  console.log("Försöker spara");
   console.log(path.join(process.cwd(), 'configuration.JSON'));
-  readFile(path.join(process.cwd(), 'configuration.JSON'), 'utf8')
+  configHelper.saveFolder(
+    );
+  /*readFile(path.join(process.cwd(), 'configuration.JSON'), 'utf8')
   .then(data => JSON.parse(data))
   .then(config => {
     config.push(
-      {'folder': {
-        'name': path.basename(directory),
-        'path': path.dirname(directory)
-      }
+      
     });
-    console.log(config);
+
     fs.writeFile(path.join(process.cwd(), 'configuration.JSON'), JSON.stringify(config), function(err) {
       if(err)
         console.log(err);
       cb();
     }); 
-    cb();
-  });
+  });*/
 }
 
 module.exports = {
