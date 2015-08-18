@@ -16,16 +16,21 @@ const add = function (req, res) {
         stat(req.body.folder)
         .then(stats => {
           if(stats.isDirectory()) {
-            saveToConfig(req.body.folder, function() {
-              res.sendStatus(201);
-            });
+
+            configHelper.saveFolder(
+            {'folder': {
+                'name': path.basename(req.body.folder),
+                'path': path.dirname(req.body.folder)
+              }
+            }).then(() => res.sendStatus(201));
+
           } else {
-            console.log("Skickar 420 1");
+            
             res.sendStatus(420);
           }
         })
         .error(err => {
-          console.log("Skickar 420 2");
+
           res.sendStatus(420);
         })
       } 
