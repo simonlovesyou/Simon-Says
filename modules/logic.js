@@ -5,9 +5,7 @@ import async from 'async';
 import pathExists from 'path-exists';
 import events from './events.js';
 import comparators from './comparators.js';
-
-console.log(comparators);
-
+import configHelper from './api/configHelper.js'
 
 let readFile = Promise.promisify(fs.readFile),
     writeFile = Promise.promisify(fs.writeFile),
@@ -22,48 +20,26 @@ let readFile = Promise.promisify(fs.readFile),
 
 const start = cb => {
 
-  readFile('configuration.JSON', 'utf8')
-  .then(data => JSON.parse(data))
-  .then(config => {
-    if(typeof cb === 'function') {
-      if(config) {
-        
-        cb(config);
-      } else {
-        console.log('Throwing error');
-        cb(null, new Error('Could not read file.'));
-      }
-    }
+  configHelper.get().then(config => {
+    console.log(config);
     return config;
   })
   .each(
-    directory => {
-      console.log(directory);
-      console.log('Reading:');
-      console.log('opt:'+ path.join(directory.folder.path, directory.folder.name));
-      readdir(path.join(directory.folder.path, directory.folder.name))
-        .then(files => {
-          var fullPath = path.join(directory.folder.path, directory.folder.name);
-          files = files || [];
-          files.forEach(file => {
-            directory.tasks = directory.tasks || [];
-            directory.tasks.forEach(task => {
-              if(testFile(fullPath, task.matchAll, task.rules,file)) {
-                events[task.events[0].type](task, file, fullPath);
-              }
-            });
-          })
+    directory => readdir(path.join(directory.folder.path, directory.folder.name))
+      .then(files => {
+        var fullPath = path.join(directory.folder.path, directory.folder.name);
+        files = files || [];
+        files.forEach(file => {
+          directory.tasks = directory.tasks || [];
+          directory.tasks.forEach(task => {
+            if(testFile(fullPath, task.matchAll, task.rules,file)) {
+              events[task.events[0].type](task, file, fullPath);
+            }
+          });
         })
-        .catch(err => {
-          throw new Error(err);
-        });
-    }
-
-
-  ).each(function(files) {
-    //console.log('files:');
-    //console.log(files);
-  }).catch(err => {
+      })
+     
+  ).catch(err => {
     throw new Error(err);
   });
 };
