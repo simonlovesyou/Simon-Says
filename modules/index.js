@@ -5,6 +5,7 @@ import path from 'path';
 import http from 'http';
 import Promise from 'bluebird';
 import fs from 'fs';
+import configHelper from './api/configHelper.js'
 
 
 let stat = Promise.promisify(fs.stat),
@@ -21,28 +22,31 @@ app.use(express.static(path.join(__dirname, '../client/')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-require('./routes')(app);
+
 
 http.createServer(app).listen('8151', () => {
   console.log('Express server listening on port ' + 8151);
 });
 
-let config;
-
+require('./routes')(app);
 
 app.get('/', function (req, res) {
-  console.log('config:'+config);
-  res.render('content', {layout: 'layout', folders: config});
+
+  configHelper.get().then(config => {
+    res.render('content', {layout: 'layout', folders: config});
+  });
 });
 
 app.get('/overview', function (req, res) {
 
-  res.render('overview', {layout: 'layout', lol: 'hejdå'});
+  res.render('overview', {layout: 'layout'});
 });
 
 app.get('/folders', function (req, res) {
 
-  res.render('folders', {layout: 'layout', folders: config});
+  configHelper.get().then(config => {
+    res.render('folders', {layout: 'layout', folders: config});
+  });
 });
 
 app.get('/add/folder', function (req, res) {
