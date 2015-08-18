@@ -32,7 +32,7 @@ $(document).ready(function() {
     var folderName = $(index.folderList).children().find('.active-folder').find('h3').html();
     var folderPath = $(index.folderList).children().find('.active-folder').find('p').find('i').html();
     var rules = [];
-    
+
     $('#ruleList').children().each(function() {
       var selects = $(this).find('select');
       var self = this;
@@ -40,7 +40,7 @@ $(document).ready(function() {
       rules.push({
         "type": $(selects[0]).val(),
         "comparator": $(selects[1]).val(),
-        "reference": $(self).find('input').val();
+        "reference": $(self).find('input').val()
       });
     });
 
