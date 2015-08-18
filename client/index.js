@@ -71,6 +71,28 @@ $(document).ready(function() {
       console.log($(this).siblings());
       $(this).siblings().find('div').removeClass('active-folder');
       $(this).find('div').addClass('active-folder');
+
+      var folderName = $(index.folderList).children().find('.active-folder').find('h3').html();
+      var folderPath = $(index.folderList).children().find('.active-folder').find('p').find('i').html();
+
+      var query = $.param({
+        "folderName": folderName,
+        "folderPath": folderPath
+      });
+
+      console.log(query);
+
+      $.ajax({
+        url: '/api/tasks/get?'+query,
+        type: 'get',
+        statusCode: {
+          200: function(res) {
+            console.log("Loaded tasks!");
+            console.log(JSON.parse(res)[0]);
+
+          }
+        }
+      });
     });
   });
 
