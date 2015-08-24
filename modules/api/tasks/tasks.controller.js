@@ -5,8 +5,7 @@ import url from 'url';
 import configHelper from '../configHelper.js'
 
 const add = (req, res) => {
-  console.log("Får en request, body:");
-  console.log(req.body);
+
   let body = req.body;
   console.log(JSON.parse(body["rules"]));
 
