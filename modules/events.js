@@ -1,14 +1,6 @@
 import path from 'path';
-import fs from 'fs';
 import Promise from 'bluebird';
-
-let readFile = Promise.promisify(fs.readFile),
-    writeFile = Promise.promisify(fs.writeFile),
-    readdir = Promise.promisify(fs.readdir),
-    rename = Promise.promisify(fs.rename),
-    appendFile = Promise.promisify(fs.appendFile),
-    stat = Promise.promisify(fs.stat),
-    unlink = Promise.promisify(fs.unlink);
+let fs = Promise.promisifyAll(require('fs'));
 
 const events = {
 
@@ -17,7 +9,7 @@ const events = {
     let origin = path.join(fullPath,file),
         dest = path.join(task.events[0].path,file);
 
-    rename(origin, dest)
+    fs.renameAsync(origin, dest)
     .then(() => {
       log(task);
       console.log('moved file "%s" from %s to %s', file, origin, dest);
@@ -31,12 +23,13 @@ const events = {
       throw new Error(err);
     });
   },
+
   rename: (task, file, fullPath) => {
 
     let origin = path.join(fullPath,file),
         newName = path.join(fullPath,task.event[0].newName+path.parse(file).ext);
 
-    rename(origin, newName)
+    fs.renameAsync(origin, newName)
     .then(() => {
       log(task);
       console.log('renamed file "%s" from %s to %s', file, origin, newName);
@@ -81,7 +74,7 @@ const events = {
   delete: (task, file, fullPath) => {
     let filePath = path.join(fullPath, file);
 
-    unlink(filePath).then(() => {
+    fs.unlinkAsync(filePath).then(() => {
       log(task);
       if(task.events.length > 1) {
         task.events.splice(0,1);
@@ -116,7 +109,7 @@ function log(task) {
                 '" fired event "'+ task.events[0].type + '"\n';
 
 
-  appendFile('history.log', message)
+  fs.appendFileAsync('history.log', message)
   .catch(err => {throw new Error(err)});
 }
 

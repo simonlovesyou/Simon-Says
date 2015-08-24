@@ -4,12 +4,9 @@ import dirsortjs from './logic'
 import path from 'path';
 import http from 'http';
 import Promise from 'bluebird';
-import fs from 'fs';
 import configHelper from './api/configHelper.js'
 
-
-let stat = Promise.promisify(fs.stat),
-    app = express();
+let app = express();
 
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'jade');

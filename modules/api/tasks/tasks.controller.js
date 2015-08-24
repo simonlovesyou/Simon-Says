@@ -4,9 +4,6 @@ import path from 'path';
 import url from 'url';
 import configHelper from '../configHelper.js'
 
-let stat = Promise.promisify(fs.stat),
-    readFile = Promise.promisify(fs.readFile);
-
 const add = (req, res) => {
   console.log("Får en request, body:");
   console.log(req.body);

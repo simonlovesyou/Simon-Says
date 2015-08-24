@@ -1,10 +1,8 @@
 import Promise from 'bluebird';
-import fs from 'fs';
 import path from 'path';
 import configHelper from '../configHelper.js'
+let fs = Promise.promisifyAll(require('fs'));
 
-let stat = Promise.promisify(fs.stat),
-    readFile = Promise.promisify(fs.readFile);
 
 
 const add = function (req, res) {
@@ -13,7 +11,7 @@ const add = function (req, res) {
     if(!path.isAbsolute(req.body.folder)) {
         res.sendStatus(404);
       } else {
-        stat(req.body.folder)
+        fs.statAsync(req.body.folder)
         .then(stats => {
           if(stats.isDirectory()) {
 

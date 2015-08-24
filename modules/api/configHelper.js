@@ -1,11 +1,6 @@
-import fs from 'fs';
 import Promise from 'bluebird';
 import path from 'path';
-
-let readFile = Promise.promisify(fs.readFile),
-    writeFile = Promise.promisify(fs.writeFile);
-
-
+let fs = Promise.promisifyAll(require('fs'));
 
 const configHelper = () => {
 
@@ -14,7 +9,7 @@ const configHelper = () => {
   let getData = () => {
 
     if(!innerRepresentation || innerRepresentation.changed) {
-      return readFile(path.join(process.cwd(), 'configuration.JSON'), 'utf8')
+      return fs.readFileAsync(path.join(process.cwd(), configName), 'utf8')
       .then(data => JSON.parse(data))
       .then(config => {
         innerRepresentation = config;
@@ -53,7 +48,8 @@ const configHelper = () => {
     .then(config => save(config))
     .catch(err => err);
 
-  let save = (data) => writeFile(path.join(process.cwd(), 'configuration.JSON'), JSON.stringify(data))
+  let save = (data) => fs.writeFileAsync(path.join(process.cwd(), configName), 
+                                         JSON.stringify(data))
                         .catch(err => err);
   
 
