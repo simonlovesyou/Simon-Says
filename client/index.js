@@ -108,6 +108,7 @@ $(document).ready(function() {
     });
   });
 
+  //When clicking on 'Add rule' in the 'Add task' modal
   $('#addRule').on('click', function() {
     console.log($('#ruleList'));
     $('#ruleList')
