@@ -4,17 +4,13 @@ import configHelper from '../configHelper.js'
 let fs = Promise.promisifyAll(require('fs'));
 
 
-
-const add = function (req, res) {
-    console.log("FICK EN REQ:");
-    console.log(req.body);
+const add = (req, res) => {
     if(!path.isAbsolute(req.body.folder)) {
         res.sendStatus(404);
       } else {
         fs.statAsync(req.body.folder)
         .then(stats => {
           if(stats.isDirectory()) {
-
             configHelper.saveFolder(
             {'folder': {
                 'name': path.basename(req.body.folder),
