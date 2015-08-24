@@ -27,10 +27,7 @@ const get = (req, res) => {
     res.statusCode(400);
   } else {
     configHelper
-    .getTasks(query.folderName, query.folderPath)
-    .then(tasks => 
-      tasks
-      .map(task => ({"name": task.name, "description": task.description})))
+    .getTasks(query.folderName, query.folderPath, query.taskId)
     .then(tasks => res.send(JSON.stringify(tasks)));
   }
 }
