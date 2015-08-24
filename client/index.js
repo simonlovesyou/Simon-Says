@@ -2,7 +2,8 @@
 //Look up index for HTMLElements
 var index = {
   'folderList': '.row > .col-md-6:first-child > ul',
-  'taskList': '.row > .col-md-6:nth-child(2) > ul'
+  'taskList': '.row > .col-md-6:nth-child(2) > ul',
+  'editTaskBody': '#editTaskModal > .modal-dialog > .modal-content > .container-fluid > .row > .modal-body'
 }
 
 $(document).ready(function() {
