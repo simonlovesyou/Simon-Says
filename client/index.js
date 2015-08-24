@@ -119,10 +119,98 @@ $(document).ready(function() {
       $(this).on('click', function() {
         $(this).parent().remove();
       })
-    })
     });
+  });
+  //When clicking on 'Save Changes' in the 'Edit Task' modal
+    $('#saveTaskEdit').on('click', function() {
+
+      var folder = getActiveFolder();
+      var rules = [];
+
+      $('#editTaskRuleList').children().each(function() {
+        var selects = $(this).find('select');
+        var self = this;
+
+        //Add each rule
+        rules.push({
+          "type":       $(selects[0]).val(),
+          "comparator": $(selects[1]).val(),
+          "reference":  $(self).find('input').val()
+        });
+      });
+
+
+      $.ajax({
+        url: '/api/tasks/edit',
+        type: 'post',
+        dataType: 'json',
+        data: {
+          "folderName": folder.name,
+          "folderPath": folder.path,
+          "taskName": $('#editTaskName').val(),
+          "taskDescription": $('#editTaskDescription').val(),
+          "matchAll": $('#editTaskMatch').val() === 'All',
+          "interval": $('#editTaskInterval').val(),
+          "rules": JSON.stringify(rules)
+        },
+        statusCode: {
+          200: function(res) {
+            console.log("Task saved!");
+          }
+        }
+      });
+    });
+ setTaskClickEvent();
 });
 
+
+
+
+
+function setTaskClickEvent() {
+   //When clicking on a 'Task'
+  $(index.taskList).children('li').on('click', function() {
+
+    $('#editTaskModal').modal('show');
+
+    var id = $(this).children('p').html();
+    var folder = getActiveFolder();
+
+    var query = $.param({
+      "taskId": id,
+      "folderName": folder.name,
+      "folderPath": folder.path,
+    });
+
+    $.ajax({
+      url: '/api/tasks/get?'+query,
+      type: 'get',
+      statusCode: {
+        200: function(res) {
+          $(index.taskList).empty();
+            var task = JSON.parse(res)[0];
+            var inputs = $(index.editTaskBody).find('input');
+            
+            $(inputs[0]).val(task.name);
+            $(inputs[1]).val(task.description);
+            $(inputs[2]).val(task.interval);
+
+            $(task.rules).each(function() {
+              addRule($('#editTaskRuleList'));
+              var lastEntry = $('#editTaskRuleList').children('li:last-child')
+              var selects = lastEntry.find('select');
+              var input = lastEntry.find('input');
+              $(selects[0]).val(this.type);
+              $(selects[1]).val(this.comparator);
+              $(input).val(this.reference);
+            });
+            
+          //});
+        }
+      }
+    });
+  })
+}
 
 
 function addRule(ulList) {
