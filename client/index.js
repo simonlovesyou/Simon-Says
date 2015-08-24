@@ -92,9 +92,18 @@ $(document).ready(function() {
         type: 'get',
         statusCode: {
           200: function(res) {
-            console.log("Loaded tasks!");
-            console.log(JSON.parse(res)[0]);
-
+            $(index.taskList).empty();
+            $(JSON.parse(res)).each(function() {
+              console.log("Success!");
+              $(index.taskList).append( '<li>'+
+                                          '<p>'+this.id+'</p>'+
+                                          '<h4>'+this.name+'</h4>'+
+                                          '<p> <i>'+this.description+'</i> </p>'+
+                                        '</li>'
+                                      );
+              
+            });
+            setTaskClickEvent();
           }
         }
       });
