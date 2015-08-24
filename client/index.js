@@ -35,8 +35,7 @@ $(document).ready(function() {
   //When clicking on 'Save Changes' in the 'New Task' modal
   $('#taskSave').on('click', function() {
 
-    var folderName = $(index.folderList).children().find('.active-folder').find('h3').html();
-    var folderPath = $(index.folderList).children().find('.active-folder').find('p').find('i').html();
+    var folder = getActiveFolder();
     var rules = [];
 
     $('#ruleList').children().each(function() {
@@ -57,8 +56,8 @@ $(document).ready(function() {
       type: 'post',
       dataType: 'json',
       data: {
-        "folderName": folderName,
-        "folderPath": folderPath,
+        "folderName": folder.name,
+        "folderPath": folder.path,
         "taskName": $('#taskName').val(),
         "taskDescription": $('#taskDescription').val(),
         "matchAll": $('#taskMatch').val() === 'All',
@@ -79,12 +78,11 @@ $(document).ready(function() {
       $(this).siblings().find('div').removeClass('active-folder');
       $(this).find('div').addClass('active-folder');
 
-      var folderName = $(index.folderList).children().find('.active-folder').find('h3').html();
-      var folderPath = $(index.folderList).children().find('.active-folder').find('p').find('i').html();
+      var folder = getActiveFolder();
 
       var query = $.param({
-        "folderName": folderName,
-        "folderPath": folderPath
+        "folderName": folder.name,
+        "folderPath": folder.path
       });
 
       console.log(query);
@@ -130,4 +128,14 @@ $(document).ready(function() {
     })
     });
 });
+
+function getActiveFolder() {
+  var folderName = $(index.folderList).children().find('.active-folder').find('h3').html();
+  var folderPath = $(index.folderList).children().find('.active-folder').find('p').find('i').html();
+
+  return {
+    "name": folderName,
+    "path": folderPath
+  }
+}
 
