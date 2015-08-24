@@ -19,37 +19,15 @@ const add = (req, res) => {
             }).then(() => res.sendStatus(201));
 
           } else {
-            
+
             res.sendStatus(420);
           }
         })
-        .error(err => {
-
+        .catch(err => {
           res.sendStatus(420);
         })
       } 
 };
-
-
-function saveToConfig(directory, cb) {
-  console.log("Försöker spara");
-  console.log(path.join(process.cwd(), 'configuration.JSON'));
-  configHelper.saveFolder(
-    );
-  /*readFile(path.join(process.cwd(), 'configuration.JSON'), 'utf8')
-  .then(data => JSON.parse(data))
-  .then(config => {
-    config.push(
-      
-    });
-
-    fs.writeFile(path.join(process.cwd(), 'configuration.JSON'), JSON.stringify(config), function(err) {
-      if(err)
-        console.log(err);
-      cb();
-    }); 
-  });*/
-}
 
 module.exports = {
   add
