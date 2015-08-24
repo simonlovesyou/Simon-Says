@@ -8,10 +8,7 @@ import configHelper from './api/configHelper.js'
 
 const start = cb => {
 
-  configHelper.get().then(config => {
-    console.log(config);
-    return config;
-  })
+  configHelper.get()
   .each(
     directory => readdir(path.join(directory.folder.path, directory.folder.name))
       .then(files => {
