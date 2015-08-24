@@ -50,5 +50,6 @@ const saveTask = (folderName, folderPath, taskName, taskDescription, matchAll, i
 
 module.exports = {
   add,
-  get
+  get,
+  edit
 };
