@@ -6,7 +6,7 @@ const configHelper = () => {
 
   let innerRepresentation;
 
-  let getData = () => {
+  const getData = () => {
 
     if(!innerRepresentation || innerRepresentation.changed) {
       return fs.readFileAsync(path.join(process.cwd(), configName), 'utf8')
@@ -25,7 +25,7 @@ const configHelper = () => {
     }
   }
 
-  let getTasks = (folderName, folderPath) => {
+  const getTasks = (folderName, folderPath, taskId) => {
     return getData()
     .then(config => 
       config.filter(folder => {
@@ -39,7 +39,7 @@ const configHelper = () => {
     .catch(err => err);
   }
 
-  let saveFolder = (data) => 
+  const saveFolder = (data) => 
     getData()
     .then(config => {
       config.push(data);
@@ -53,7 +53,7 @@ const configHelper = () => {
                         .catch(err => err);
   
 
-  let saveTask = (folderName, folderPath, data) => 
+  const saveTask = (folderName, folderPath, data) => 
     getData()
     .then(config => 
       config.map(folder => {
@@ -67,10 +67,24 @@ const configHelper = () => {
     .then(config => save(config))
     .catch(err => err);
 
-    let deleteTask = (folderName, folderPath) => {};
+    const deleteTask = (folderName, folderPath) => {
+      getData()
+      .then(config => 
+        config.forEach(folder => {
+          if(folder.folder.name === folderName && folder.folder.path === folderPath) {
+            folder.tasks.filter(task => {
+              /*if(/* Verify that the task is the correct one to delete) {
+                return false;
+              } */
+              return true;
+            });
+          }
+        })
+      )
+    };
   
 
-  let get = () => {
+  const get = () => {
     return getData();
   };
   return {
