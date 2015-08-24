@@ -7,7 +7,6 @@ var index = {
 }
 
 $(document).ready(function() {
-  $('#folderSave').on('click', function() {
 
   //When clicking on 'Save Changes' in the new 'Folder' modal
   $('#folderSave').on('click', function() {
@@ -72,9 +71,10 @@ $(document).ready(function() {
     });
   });
 
+  //When clicking a folder in the folder list
   $(index.folderList).children().each(function() {
     $(this).on('click', function() {
-      console.log($(this).siblings());
+
       $(this).siblings().find('div').removeClass('active-folder');
       $(this).find('div').addClass('active-folder');
 
