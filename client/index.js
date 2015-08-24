@@ -1,3 +1,5 @@
+
+//Look up index for HTMLElements
 var index = {
   'folderList': '.row > .col-md-6:first-child > ul',
   'taskList': '.row > .col-md-6:nth-child(2) > ul'
@@ -6,6 +8,8 @@ var index = {
 $(document).ready(function() {
   $('#folderSave').on('click', function() {
 
+  //When clicking on 'Save Changes' in the new 'Folder' modal
+  $('#folderSave').on('click', function() {
     $.ajax({
       url: '/api/folders/add',
       type: 'post',
@@ -27,6 +31,7 @@ $(document).ready(function() {
     });
   });
 
+  //When clicking on 'Save Changes' in the 'New Task' modal
   $('#taskSave').on('click', function() {
 
     var folderName = $(index.folderList).children().find('.active-folder').find('h3').html();
@@ -37,6 +42,7 @@ $(document).ready(function() {
       var selects = $(this).find('select');
       var self = this;
 
+      //Add each rule
       rules.push({
         "type": $(selects[0]).val(),
         "comparator": $(selects[1]).val(),
