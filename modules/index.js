@@ -15,11 +15,8 @@ app.set('view options', {
 });
 
 app.use(express.static(path.join(__dirname, '../client/')));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-
 
 http.createServer(app).listen('8151', () => {
   console.log('Express server listening on port ' + 8151);
