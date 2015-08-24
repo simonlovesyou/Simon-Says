@@ -4,6 +4,7 @@ let fs = Promise.promisifyAll(require('fs'));
 
 const configHelper = () => {
 
+  let configName = 'configuration.JSON'
   let innerRepresentation;
 
   const getData = () => {
@@ -34,8 +35,19 @@ const configHelper = () => {
         } else {
           return false;
         }
-      }))
-    .then(folder => folder[0].tasks)
+      })[0])
+    .then(folder => 
+      folder.tasks.filter(task => {
+        if(taskId === undefined || taskId === null) {
+          return true;
+        }
+        if(task.id === parseInt(taskId, 10)) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+    )
     .catch(err => err);
   }
 
