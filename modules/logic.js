@@ -10,20 +10,19 @@ const start = cb => {
 
   configHelper.get()
   .each(
-    directory => readdir(path.join(directory.folder.path, directory.folder.name))
-      .then(files => {
-        var fullPath = path.join(directory.folder.path, directory.folder.name);
-        files = files || [];
-        files.forEach(file => {
-          directory.tasks = directory.tasks || [];
-          directory.tasks.forEach(task => {
-            if(testFile(fullPath, task.matchAll, task.rules,file)) {
-              events[task.events[0].type](task, file, fullPath);
-            }
-          });
-        })
+    directory => fs.readdirAsync(path.join(directory.folder.path, directory.folder.name))
+    .then(files => {
+      var fullPath = path.join(directory.folder.path, directory.folder.name);
+      files = files || [];
+      files.forEach(file => {
+        directory.tasks = directory.tasks || [];
+        directory.tasks.forEach(task => {
+          if(testFile(fullPath, task.matchAll, task.rules,file) && task.events) {
+            events[task.events[0].type](task, file, fullPath);
+          }
+        });
       })
-     
+    })
   ).catch(err => {
     throw new Error(err);
   });
@@ -43,7 +42,6 @@ function testFile(dir, matchAll, rules, file) {
 
   return matches >= nrOfMatches;
 }
-
 
 //Expose
 module.exports = {
