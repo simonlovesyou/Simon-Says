@@ -45,8 +45,7 @@ function testFile(dir, matchAll, rules, file) {
 
 //Expose
 module.exports = {
-  start,
-  config
+  start
 }
 
 
