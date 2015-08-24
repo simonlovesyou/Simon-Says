@@ -43,9 +43,9 @@ $(document).ready(function() {
 
       //Add each rule
       rules.push({
-        "type": $(selects[0]).val(),
+        "type":       $(selects[0]).val(),
         "comparator": $(selects[1]).val(),
-        "reference": $(self).find('input').val()
+        "reference":  $(self).find('input').val()
       });
     });
 
@@ -84,8 +84,6 @@ $(document).ready(function() {
         "folderName": folder.name,
         "folderPath": folder.path
       });
-
-      console.log(query);
 
       $.ajax({
         url: '/api/tasks/get?'+query,
