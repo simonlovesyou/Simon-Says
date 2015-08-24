@@ -1,22 +1,11 @@
-import fs from 'fs';
 import Promise from 'bluebird';
+let fs = Promise.promisifyAll(require('fs'));
 import path from 'path';
 import async from 'async';
 import pathExists from 'path-exists';
 import events from './events.js';
 import comparators from './comparators.js';
 import configHelper from './api/configHelper.js'
-
-let readFile = Promise.promisify(fs.readFile),
-    writeFile = Promise.promisify(fs.writeFile),
-    readdir = Promise.promisify(fs.readdir),
-    rename = Promise.promisify(fs.rename),
-    appendFile = Promise.promisify(fs.appendFile),
-    stat = Promise.promisify(fs.stat),
-    asyncP = Promise.promisifyAll(async),
-    exists = Promise.promisify(pathExists),
-    unlink = Promise.promisify(fs.unlink),
-    config;
 
 const start = cb => {
 
