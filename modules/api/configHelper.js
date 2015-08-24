@@ -73,6 +73,11 @@ const configHelper = () => {
           if(!folder.tasks) {
             folder.tasks = [];
           }
+          let id = 1;
+          for(var i = 0; i < folder.tasks.length; i++) {
+            id = folder.tasks[i].id+1;
+          }
+          data.id = id;
           folder.tasks.push(data);
         } return folder;
       }))
