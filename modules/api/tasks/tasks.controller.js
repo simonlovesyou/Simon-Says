@@ -40,10 +40,9 @@ const saveTask = (folderName, folderPath, taskName, taskDescription, matchAll, i
     "matchAll": matchAll,
     "interval": parseInt(interval, 10),
     "rules": rules
-  }
+  };
 
-  configHelper.saveTask(folderName, folderPath, task);
-
+  return configHelper.saveTask(folderName, folderPath, task);
 }
 
 
