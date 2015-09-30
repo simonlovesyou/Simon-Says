@@ -7,17 +7,25 @@ import comparators from './comparators.js';
 import configHelper from './api/configHelper.js'
 
 const start = cb => {
-
+  console.log(configHelper.get());
+  //Get the JSON db from disk
   configHelper.get()
+  //For every folder 
   .each(
+    //Read the contents of the folder
+    //TODO: If ENOENT, write warning to log
+    //TODO: If not a directory, write warning to log
     directory => fs.readdirAsync(path.join(directory.folder.path, directory.folder.name))
     .then(files => {
       var fullPath = path.join(directory.folder.path, directory.folder.name);
       files = files || [];
+      //For every file in the folder
       files.forEach(file => {
         directory.tasks = directory.tasks || [];
+        console.log(directory.tasks);
+        //For every task assigned to this folder test if the files match
         directory.tasks.forEach(task => {
-          if(testFile(fullPath, task.matchAll, task.rules,file) && task.events) {
+          if(testFile(fullPath, task.matchAll, task.rules, file) && task.events) {
             events[task.events[0].type](task, file, fullPath);
           }
         });
