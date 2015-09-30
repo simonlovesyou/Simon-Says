@@ -1,6 +1,9 @@
 import Promise from 'bluebird';
 import path from 'path';
 let fs = Promise.promisifyAll(require('fs'));
+import lowdb from 'lowdb'
+let db = lowdb('configuration.JSON');
+
 
 const configHelper = () => {
 
@@ -8,22 +11,9 @@ const configHelper = () => {
   let innerRepresentation;
 
   const getData = () => {
-
-    if(!innerRepresentation || innerRepresentation.changed) {
-      return fs.readFileAsync(path.join(process.cwd(), configName), 'utf8')
-      .then(data => JSON.parse(data))
-      .then(config => {
-        innerRepresentation = config;
-        return config;
-      })
-      .catch(err => {
-        return err;
-      });
-    } else {
-      return new Promise(resolve => {
-        resolve(innerRepresentation);
-      });
-    }
+    return new Promise((resolve, reject) => {
+      return resolve(db('folders').value());
+    });
   }
 
   const getTasks = (folderName, folderPath, taskId) => {
