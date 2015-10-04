@@ -1,4 +1,4 @@
-# dirsortjs
+# Simon Says
  
 
 A powerful filesystem management tool built with Node.js. Have dirsortjs watch a folder quietly in the background and it will organize the contents for you based on the rules you give it.
