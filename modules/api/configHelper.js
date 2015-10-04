@@ -1,9 +1,9 @@
 import Promise from 'bluebird';
 import path from 'path';
 let fs = Promise.promisifyAll(require('fs'));
-import lowdb from 'lowdb'
-let db = lowdb('configuration.JSON');
-
+//import lowdb from 'lowdb'
+let lowdb = Promise.promisifyAll(require('lowdb'));
+let db = Promise.promisifyAll(lowdb('configuration.JSON'));
 
 const configHelper = () => {
 
@@ -17,16 +17,38 @@ const configHelper = () => {
   }
 
   const getTasks = (folderName, folderPath, taskId) => {
-    return getData()
-    .then(config => 
+    //console.log(db);
+
+
+    /*return new Promise((resolve, reject) => {
+      resolve(db('folders').findAsync({folder:{name: folderName, path: folderPath}}))
+      .then(folder => {
+        console.log(folder);
+        return folder.tasks;
+      });
+    });*/
+
+    console.log(db);
+
+    getData().then(folders => {
+      console.log(folders);
+      return new Promise((resolve, reject) => {
+        return resolve(folders.find({ folder: { name: folderName, path: folderPath } }));
+      });
+      
+    });
+    /*.then(folder => {
+      console.log(folder);
+    });*/
+    /*.then(config => 
       config.filter(folder => {
         if(folder.folder.name === folderName && folder.folder.path === folderPath) {
           return true;
         } else {
           return false;
         }
-      })[0])
-    .then(folder => 
+      })[0])*/
+    /*.then(folder => 
       folder.tasks.filter(task => {
         if(taskId === undefined || taskId === null) {
           return true;
@@ -38,7 +60,8 @@ const configHelper = () => {
         }
       })
     )
-    .catch(err => err);
+    .catch(err => err);*/
+    //return res;
   }
 
   const saveFolder = (data) => 

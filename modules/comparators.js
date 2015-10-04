@@ -32,4 +32,5 @@ const comparators = {
   }
 };
 
+//Expose
 module.exports = comparators;

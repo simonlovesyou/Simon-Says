@@ -10,7 +10,7 @@ const start = cb => {
   console.log(configHelper.get());
   //Get the JSON db from disk
   configHelper.get()
-  //For every folder 
+  //For every folder
   .each(
     //Read the contents of the folder
     //TODO: If ENOENT, write warning to log

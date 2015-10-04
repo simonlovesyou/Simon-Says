@@ -45,6 +45,10 @@ const saveTask = (folderName, folderPath, taskName, taskDescription, matchAll, i
   return configHelper.saveTask(folderName, folderPath, task);
 }
 
+const edit = () => {
+
+}
+
 
 
 
