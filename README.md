@@ -1,7 +1,7 @@
 # Simon Says
  
 
-A powerful filesystem management tool built with Node.js. Have dirsortjs watch a folder quietly in the background and it will organize the contents for you based on the rules you give it.
+A powerful filesystem management tool built with Node.js. Tell Simon Says to watch a folder and it will quietly in the background organize the contents for you based on the rules you give it.
  
 
 This is a **WIP**, please see Features list on what’s to come and what’s already implemented.
