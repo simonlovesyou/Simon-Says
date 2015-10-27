@@ -1,5 +1,5 @@
 {
-  "name": "dirsortjs",
+  "name": "Simon-Says",
   "version": "1.0.0",
   "description": "A filesystem directory sorter that will sort the contents of a folder dependent on user specified rules.",
   "main": "index.js",
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/simonlovesyou/dirsortjs.git"
+    "url": "https://github.com/simonlovesyou/simon-says.git"
   },
   "keywords": [
     "fs"
@@ -33,7 +33,7 @@
   "author": "simonlovesyou",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/simonlovesyou/dirsortjs/issues"
+    "url": "https://github.com/simonlovesyou/Simon-says/issues"
   },
-  "homepage": "https://github.com/simonlovesyou/dirsortjs"
+  "homepage": "https://github.com/simonlovesyou/Simon-says"
 }
