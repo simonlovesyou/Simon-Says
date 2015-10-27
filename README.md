@@ -82,6 +82,8 @@ If a file inside of the directory obeys a rule it will fire an **event** for tha
 - Add a library that will handle time formatting. i.e., '10 min' to 600000 milliseconds
 - Show the history.log in the application
 - Add any library that will handle the configuration.JSON file instead of own logic to do so. (TaffyDB, lowdb are candidates for this)
+- Work on the design
+- Make a logo
 
 ## Authors
 
