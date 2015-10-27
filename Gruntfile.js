@@ -147,7 +147,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-concat");
   grunt.loadNpmTasks("grunt-contrib-uglify");
   grunt.loadNpmTasks("grunt-contrib-cssmin");
-	grunt.registerTask("default", ["eslint", "babel", "jade", "jsonmin", "cssmin", "concat", "clean", "uglify", "watch"]);
+	grunt.registerTask("default", ["clean", "eslint", "babel", "jade", "jsonmin", "cssmin", "concat", "clean", "uglify", "watch"]);
 
   //# sourceMappingURL=/path/to/file.js.map
 };
