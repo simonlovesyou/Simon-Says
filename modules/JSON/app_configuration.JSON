@@ -1,0 +1,31 @@
+{
+  "folders": [
+    {
+      "folder": {
+        "name": "a_folder/",
+        "path": "/Users/simon/Desktop/"
+      },
+      "description": "desc",
+      "tasks": [
+        {
+          "id": 1,
+          "matchAll": true,
+          "interval": 5000,
+          "rules": [
+            {
+              "type": "filename",
+              "comparator": "equals",
+              "reference": "lars"
+            }
+          ],
+          "events": [
+            {
+              "type": "copy",
+              "copyName": "test.txt"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
