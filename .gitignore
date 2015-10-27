@@ -27,4 +27,16 @@ build/Release
 node_modules
 
 # Compiled ES6 files
-dist
+./client/
+client/*
+
+# DS Store
+**/DS_Store
+
+# Debug html files
+debug/
+
+# TMP folder
+**/tmp/
+
+
