@@ -2,25 +2,37 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 	  "babel": {
-	    options: {
-	      sourceMap: true
-	    },
-	    dist: {
+	    background: {
+        options: {
+          sourceMap: false
+        },
 	      files: [{
           "expand": true,
-          "cwd": "modules/",
+          "cwd": "modules/background/",
           "src": ["**/*.js"],
-          "dest": "dist/",
+          "dest": "client/logic",
           "ext": ".js"
 	      }]
-	    }
+	    },
+      client: {
+        options: {
+          sourceMap: true
+        },
+        files: [{
+          "expand": true,
+          "cwd": "modules/client/assets/js/",
+          "src": ["**/*.js"],
+          "dest": "modules/client/assets/js/tmp/",
+          "ext": ".js"
+        }]
+      }
 	  },
 	  watch: {
-	  	babel: {
-	  		files: ['./modules/**/*.js'],
-	  		tasks: ['babel'],
+	  	background: {
+	  		files: ["./modules/background/**/*.js"],
+	  		tasks: ["eslint", "babel"],
 	  		options: {
-          spawn: false,
+          spawn: false
         },
 	  	}
 	  },
