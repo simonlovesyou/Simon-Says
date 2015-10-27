@@ -7,9 +7,9 @@ import configHelper from '../configHelper.js'
 const add = (req, res) => {
 
   let body = req.body;
-  console.log(JSON.parse(body["rules"]));
+  console.log(JSON.parse(body['rules']));
 
-  saveTask(body.folderName, body.folderPath, body.taskName, 
+  saveTask(body.folderName, body.folderPath, body.taskName,
           body.taskDescription, body.matchAll, body.interval, JSON.parse(body.rules))
   .then(() => {
     return res.sendStatus(200);
@@ -35,21 +35,18 @@ const get = (req, res) => {
 const saveTask = (folderName, folderPath, taskName, taskDescription, matchAll, interval, rules, cb) => {
 
   let task = {
-    "name": taskName,
-    "description": taskDescription,
-    "matchAll": matchAll,
-    "interval": parseInt(interval, 10),
-    "rules": rules
+    'name': taskName,
+    'description': taskDescription,
+    'matchAll': matchAll,
+    'interval': parseInt(interval, 10),
+    'rules': rules
   };
 
   return configHelper.saveTask(folderName, folderPath, task);
 }
 
 
-
-
 module.exports = {
   add,
-  get,
-  edit
+  get
 };
