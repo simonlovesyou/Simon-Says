@@ -1,28 +1,22 @@
-extends layout
+extends ../index/layout
 
 block content
-	include header
+	include ../partials/header/header.jade
 
 	.row
 		button.btn.btn-primary.btn-lg(type="button", data-toggle="modal", data-target="#addFolderModal") +
 	.row
 		.col-md-6
 			
-			ul
-				each folder, index in folders
+			ul(ng-repeat="folder in folders")
 					li
-						if index === 0
-							div.folder.active-folder
-								h3= folder.folder.name
-								p #[i #{folder.folder.path}]
-						else 
-							div.folder
-								h3= folder.folder.name
-								p #[i #{folder.folder.path}]							
+						div(ng-class="{folder-active:$first}").folder
+							h3 {{folder}
+							p #[i {{folder.folder.path}}]					
 		.col-md-6
 			button.btn.btn-primary.btn-lg(type="button", data-toggle="modal", data-target="#addTaskModal") +
 			ul
-				each folder in folders
+				//-each folder in folders
 					each task in folder.tasks
 						li
 							h4= task.name

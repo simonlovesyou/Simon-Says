@@ -1,9 +1,9 @@
 extends layout.jade
 
 block content
-	include header
+	include ../partials/header/header.jade
 	
-	each folder in folders
+	//-each folder in folders
 			h2= folder.folder.name
 			p= folder.folder.path
 			h3 Tasks
