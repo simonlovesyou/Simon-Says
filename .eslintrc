@@ -52,8 +52,7 @@
     	//Stylistic
     	"array-bracket-spacing": [2, "never"],
     	"brace-style": [2, "1tbs", { "allowSingleLine": true }],
-    	"indent": [2, 2, {"VariableDeclarator": 2}],
-    	"key-spacing": 2,
+    	"indent": [1, 2, {"VariableDeclarator": 2}],
     	"no-inline-comments": 1,
     	"no-lonely-if": 2,
     	"no-mixed-spaces-and-tabs": 2,
