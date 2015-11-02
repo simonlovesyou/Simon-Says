@@ -33,12 +33,16 @@ module.exports = function(grunt) {
     uglify: {
       client: {
         options: {
-          sourceMap: true,
-          sourceMapName: 'client/assets/js/main.map'
+          sourceMapIncludeSources: true,
+          sourceMap: function(path) { return path.replace(/.js/,".map")} 
         },
-        files: {
-          'client/assets/js/main.min.js': ['client/assets/js/main.js']
-        }
+        files: [{
+          expand: true,
+          cwd: "client/app/",
+          src: "**/*.js",
+          dest: "client/app/",
+          ext: ".min.js"
+        }]
       }
     },
     jade: {
