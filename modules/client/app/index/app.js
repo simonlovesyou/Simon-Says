@@ -1,7 +1,7 @@
 // Declare app level module which depends on filters, and services
 import angular from 'angular';
 
-var simonSays = angular.module('SimonSays', []);
+let simonSays = angular.module('SimonSays', ['ngRoute']);
 
 console.log(simonSays);
 
