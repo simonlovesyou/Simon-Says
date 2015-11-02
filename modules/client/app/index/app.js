@@ -8,7 +8,9 @@ import fs from 'fs';
 
 let simonSays = angular.module('SimonSays', ['ngRoute']);
 
-console.log(simonSays);
+simonSays
+.controller('FolderCtrl', ['$scope', FolderCtrl])
+.controller('TaskCtrl', ['$scope', TaskCtrl]);
 
 /*simonSays.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
