@@ -38,6 +38,17 @@ const add = (req, res) => {
   }
 };
 
+const get = (req, res) => {
+  configHelper.get().then((folders) => {
+    folders.fest = 'hej';
+    res.sender.send('folders/get', new Response(200, null, folders));
+  })
+  .catch(err => {
+    res.sender.send('folders/get', new Response(404, err.message, null));
+  })
+}
+
 module.exports = {
-  add
+  add,
+  get
 };
