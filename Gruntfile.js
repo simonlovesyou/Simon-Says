@@ -106,14 +106,14 @@ module.exports = function(grunt) {
 	  		tasks: ["eslint", "babel"],
 	  		options: {
           spawn: false
-        },
+        }
 	  	},
       client: {
-        files: ["./modules/client/**/*.js"],
-        tasks: ["eslint", "babel:client", "concat", "clean"],
+        files: ["./modules/client/app/**/*.js"],
+        tasks: ["eslint", "babel:client"],
         options: {
           spawn: false
-        },
+        }
       },
       jade: {
         files: ["./modules/**/*.jade"],
