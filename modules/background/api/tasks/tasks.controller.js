@@ -29,25 +29,24 @@ const add = (req, res) => {
 };
 
 const get = (req, res) => {
-  let urlParts = url.parse(req.url, true);
-  let query = urlParts.query;
-  if(!query || !query.folderName || !query.folderPath) {
-    res.statusCode(400);
-  } else {
-    configHelper
-    .getTasks(query.folderName, query.folderPath, query.taskId)
-    .then(tasks => res.send(JSON.stringify(tasks)));
-  }
+
+  return configHelper
+  .getTasks(req.where.name, req.where.path)
+  .then(tasks => res.sender.send('tasks/get', new Response(200, null, tasks)))
+  .catch(err => {
+    res.sender.send('tasks/get', new Response(404, err.message, null));
+    console.log(err.message);
+  });
 }
 
 const saveTask = (folderName, folderPath, taskName, taskDescription, matchAll, interval, rules, cb) => {
 
   let task = {
-    'name': taskName,
-    'description': taskDescription,
-    'matchAll': matchAll,
-    'interval': parseInt(interval, 10),
-    'rules': rules
+    'name':         taskName,
+    'description':  taskDescription,
+    'matchAll':     matchAll,
+    'interval':     parseInt(interval, 10),
+    'rules':        rules
   };
 
   return configHelper.saveTask(folderName, folderPath, task);
