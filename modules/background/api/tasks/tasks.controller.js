@@ -4,6 +4,14 @@ import path from 'path';
 import url from 'url';
 import configHelper from '../configHelper.js'
 
+let Response = (status, error, data) => {
+  return {
+    status,
+    error,
+    data
+  };
+}
+
 const add = (req, res) => {
 
   let body = req.body;

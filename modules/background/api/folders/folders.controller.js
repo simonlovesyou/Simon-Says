@@ -1,10 +1,14 @@
-
-
-
-
 import Promise from 'bluebird';
 import path from 'path';
 import configHelper from '../configHelper.js';
+
+let Response = (status, error, data) => {
+  return {
+    status, //Use HTTP status code
+    error,  //Error object
+    data    //Response data
+  };
+}
 
 let fs = Promise.promisifyAll(require('fs'));
 
