@@ -1,10 +1,11 @@
 'use strict';
 
-let express = require('express'),
-    controller = require('./tasks'),
-    router = express.Router();
+import controller from './tasks';
+import Router from 'routes';
 
-router.post('/add', controller.add);
-router.get('/get', controller.get);
+let router = new Router();
+
+router.addRoute('add', controller.add);
+router.addRoute('get', controller.get);
 
 module.exports = router;
