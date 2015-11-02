@@ -44,13 +44,8 @@ const background = (() => {
 });
 
 ipc.on('goto-folders', (e, query) => {
-  console.log(e.sender);
-  mainWindow.loadUrl('file://' + process.cwd() + '/client/app/folders/folders.html');
-
-  mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.webContents.send('render-folders', 'HEJ!!!!');
-  })
-
+  console.log('file://' + process.cwd() + '/app/folders/folders.html');
+  mainWindow.loadUrl('file://' + process.cwd() + '/app/folders/folders.html');
   mainWindow.openDevTools();
 });
 
