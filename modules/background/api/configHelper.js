@@ -25,16 +25,9 @@ const configHelper = () => {
     });
   }
 
-  const getTasks = (folderName, folderPath, taskId) => {
-    return getData()
-    .then(config =>
-      config.filter(folder => {
-        if(folder.folder.name === folderName && folder.folder.path === folderPath) {
-          return true;
-        }
-        return false;
-      })[0])
-    .then(folder =>
+  const getTasks = (folderName, folderPath, taskId) => 
+    getFolder(folderName, folderPath)
+    .then(folder => 
       folder.tasks.filter(task => {
         if(taskId === undefined || taskId === null) {
           return true;
@@ -45,7 +38,28 @@ const configHelper = () => {
         return false;
       })
     )
-    .catch(err => err);
+    .catch(err => {throw err;});
+  
+
+  const getFolder = (folderName, folderPath) => {
+    if(!folderName || !folderPath) {
+      throw new Error('Parameters are wrong');
+    }
+    return getData()
+    .then(config => 
+      config.folders.filter(folder => {
+        if(folder.folder.name === folderName && folder.folder.path === folderPath) {
+          return true;
+        }
+        return false;
+      })[0])
+    .then(folder => {
+      if(folder) {
+        return folder;
+      }
+      throw new Error('No folder found');
+    })
+    .catch(err => {throw err;});
   }
 
   const saveFolder = (data) =>
