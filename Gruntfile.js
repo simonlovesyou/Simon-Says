@@ -88,8 +88,13 @@ module.exports = function(grunt) {
     },
     cssmin: {
       main: {
-        src: "modules/client/assets/css/main.css",
-        dest: "client/assets/css/main.min.css"
+      files: [{
+        expand: true,
+        cwd: 'modules/client/app/',
+        src: ['**/*.css'],
+        dest: 'client/app',
+        ext: '.min.css'
+      }]
       }
     },
     clean: {
