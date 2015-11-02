@@ -86,15 +86,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    concat: {
-      options: {
-        separator: ";",
-      },
-      dist: {
-        src: ["modules/client/assets/js/tmp/*.js"],
-        dest: "client/assets/js/main.js",
-      }
-    },
     cssmin: {
       main: {
         src: "modules/client/assets/css/main.css",
@@ -148,10 +139,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-jade");
 	grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-contrib-clean");
-  grunt.loadNpmTasks("grunt-contrib-concat");
   grunt.loadNpmTasks("grunt-contrib-uglify");
   grunt.loadNpmTasks("grunt-contrib-cssmin");
-	grunt.registerTask("default", ["clean", "eslint", "babel", "jade", "jsonmin", "cssmin", "concat", "clean", "uglify", "watch"]);
+	grunt.registerTask("default", ["clean", "eslint", "babel", "jade", "jsonmin", "cssmin", "uglify", "watch"]);
 
-  //# sourceMappingURL=/path/to/file.js.map
 };
