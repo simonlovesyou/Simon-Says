@@ -10,7 +10,7 @@ const configHelper = () => {
   const getData = () => {
 
     if(!innerRepresentation || innerRepresentation.changed) {
-      return fs.readFileAsync(path.join(process.cwd(), configName), 'utf8')
+      return fs.readFileAsync(path.join(process.cwd(), config), 'utf8')
       .then(data => JSON.parse(data))
       .then(config => {
         innerRepresentation = config;
