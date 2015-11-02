@@ -98,7 +98,7 @@ module.exports = function(grunt) {
       }
     },
     clean: {
-      tmp: ['modules/client/assets/js/tmp']
+      tmp: ["client/app", "client/config", "client/logic"]
     },
 	  watch: {
 	  	background: {
