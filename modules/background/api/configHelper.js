@@ -91,7 +91,7 @@ const configHelper = () => {
         } return folder;
       }))
     .then(config => save(config))
-    .catch(err => err);
+    .catch(err => {throw err});
 
   const deleteTask = (folderName, folderPath) => {
     getData()
