@@ -10,7 +10,7 @@ module.exports = function(grunt) {
           "expand": true,
           "cwd": "modules/background/",
           "src": ["**/*.js"],
-          "dest": "client/logic",
+          "dest": "client/logic/background",
           "ext": ".js"
 	      }]
 	    },
@@ -20,9 +20,9 @@ module.exports = function(grunt) {
         },
         files: [{
           "expand": true,
-          "cwd": "modules/client/assets/js/",
+          "cwd": "modules/client/app/",
           "src": ["**/*.js"],
-          "dest": "modules/client/assets/js/tmp/",
+          "dest": "client/app/",
           "ext": ".js"
         }]
       }
