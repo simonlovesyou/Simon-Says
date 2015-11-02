@@ -7,18 +7,19 @@ let fs = Promise.promisifyAll(require('fs'));
 
 let mainWindow;
 
-let background = (() => {
+const background = (() => {
 
     // Create the browser window.
   app.on('ready', () => {
-    var confPath = path.join(process.cwd(), 'client/config/window_configuration.min.json');
+
+    var confPath = path.join(process.cwd(), 'config/window_configuration.min.json');
     console.log(confPath);
     fs.readFileAsync(confPath, 'utf8')
     .then((data) => JSON.parse(data))
     .then((data) => {
       mainWindow = new BrowserWindow((data && data.window_bounds) ? data.window_bounds : {width: 800, height: 600});
       // and load the index.html of the app.
-      mainWindow.loadUrl('file://' + process.cwd() + '/client/app/index/index.html');
+      mainWindow.loadUrl('file://' + process.cwd() + '/app/index/index.html');
 
       // Open the DevTools.
       mainWindow.openDevTools();
