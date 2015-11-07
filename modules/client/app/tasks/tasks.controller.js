@@ -26,6 +26,43 @@ const TaskCtrl = ($scope) => {
     }
   });
 
+
+  $('form').submit((event) => {
+    event.preventDefault();
+  })
+  
+  $('#taskSave').on('click', (event) => {
+
+    let folder = getActiveFolder();
+    let matchAll = ($('#taskMatch').val() === 'all');
+
+    var values = {
+      'folderName': folder.name,
+      'folderPath': folder.path,
+      'matchAll':   matchAll
+    };
+
+
+    values.rules = [];
+    $.each($('#formTask').serializeArray(), function(i, field) {
+        values[field.name] = field.value;
+    });
+
+    $('li > select').parent().each((index, value) => {
+
+      let selects = $(value).find('select');
+      values.rules.push({
+        'type':       $(selects[0]).val(),
+        'comparator': $(selects[1]).val(),
+        'reference':  $(value).find('input').val()
+      });
+    });
+
+    ipc.send('tasks', {query: 'add', values});
+
+  });
+
+
   $scope.safeApply = function(fn) {
     var phase = this.$root.$$phase;
     if(phase === '$apply' || phase === '$digest') {
