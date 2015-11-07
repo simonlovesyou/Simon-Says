@@ -4,11 +4,11 @@ import path from 'path';
 import url from 'url';
 import configHelper from '../configHelper.js'
 
-let Response = (status, error, data) => {
+let Response = (error, data, status) => {
   return {
-    status,
     error,
-    data
+    data,
+    status
   };
 }
 
@@ -20,7 +20,7 @@ const add = (req, res) => {
   saveTask(body.folderName, body.folderPath, body.taskName,
           body.taskDescription, body.matchAll, body.interval, JSON.parse(body.rules))
   .then(() => {
-    return res.sendStatus(200);
+    return res.sender.send('tasks/add', new Response(null, null, 200));
   })
   .catch(err => {
     throw new Error(err);
