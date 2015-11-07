@@ -54,6 +54,8 @@ const configHelper = () => {
       })[0])
     .then(folder => {
       if(folder) {
+        console.log("Hittade folder:");
+        console.log(folder);
         return folder;
       }
       throw new Error('No folder found');
