@@ -85,13 +85,13 @@ $(document).ready(function() {
 
   //When clicking on 'Add rule' in the 'Add task' modal
   $('#addRule').on('click', () => {
-    console.log($('#ruleList'));
     addRule($('#ruleList'));
 
     //Add eventlistener on each new delete button
-    $('#ruleList').last().find('button').each(() => {
-      $(this).on('click', function() {
-        $(this).parent().remove();
+    $('#ruleList').last().find('button').each((index, button) => {
+      let self = button;
+      $(self).on('click', function() {
+        $(self).parent().remove();
       })
     });
   });
