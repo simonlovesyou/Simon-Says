@@ -187,13 +187,14 @@ function setTaskClickEvent() {
 }
 
 function addRule(ulList) {
+  //Make these into inputs instead
   ulList.append('<li>'+
                   '<button role="button" class="pull-left btn btn-danger"> - </button>'+
-                  '<select class="col-md-3">'+
+                  '<select class="col-md-3" form="formTask">'+
                     '<option value="name"> Filename </option>'+
                     '<option value="extension"> Extension </option>'+
                   '</select>'+
-                  '<select class="col-md-3">'+
+                  '<select class="col-md-3" form="formTask">'+
                     '<option value="equals"> Equals </option>'+
                     '<option value="contains"> Contains </option>'+
                     '<option value="doesNotEquals"> Does not equals </option>'+
