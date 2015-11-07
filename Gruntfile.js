@@ -98,7 +98,7 @@ module.exports = function(grunt) {
       }
     },
     clean: {
-      tmp: ["client/**/*", "!client/package.json"]
+      tmp: ["client/**/*", "!client/package.json", "!client/node_modules/**"]
     },
 	  watch: {
 	  	background: {
