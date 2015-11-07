@@ -11,23 +11,3 @@ let simonSays = angular.module('SimonSays', ['ngRoute']);
 simonSays
 .controller('FolderCtrl', ['$scope', FolderCtrl])
 .controller('TaskCtrl', ['$scope', TaskCtrl]);
-
-/*simonSays
-.config(['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) => {
-  console.log("Går in här");
-  $routeProvider
-  .when('/', {
-    templateUrl: 'index.html'
-    //,
-    //controller: IndexCtrl
-  })
-  .when('/folders', {
-    templateUrl: fs.readFileSync(path.join(__dirname, '../folders/folders.html')),
-    controller: FolderCtrl()
-  })
-  .otherwise({
-    redirectTo: '/'
-  });
-  $locationProvider.html5Mode(true);
-}]);*/
-
