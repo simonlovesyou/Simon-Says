@@ -114,7 +114,7 @@ const configHelper = () => {
       config.forEach(folder => {
         if(folder.folder.name === folderName && folder.folder.path === folderPath) {
           folder.tasks.filter(task => {
-            /*if(/* Verify that the task is the correct one to delete) {
+            /*TODO: if(/* Verify that the task is the correct one to delete) {
               return false;
             } */
             return true;
