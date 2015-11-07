@@ -25,9 +25,9 @@ const configHelper = () => {
     });
   }
 
-  const getTasks = (folderName, folderPath, taskId) => 
+  const getTasks = (folderName, folderPath, taskId) =>
     getFolder(folderName, folderPath)
-    .then(folder => 
+    .then(folder =>
       folder.tasks.filter(task => {
         if(taskId === undefined || taskId === null) {
           return true;
@@ -39,14 +39,13 @@ const configHelper = () => {
       })
     )
     .catch(err => {throw err;});
-  
 
   const getFolder = (folderName, folderPath) => {
     if(!folderName || !folderPath) {
       throw new Error('Parameters are wrong');
     }
     return getData()
-    .then(config => 
+    .then(config =>
       config.folders.filter(folder => {
         if(folder.folder.name === folderName && folder.folder.path === folderPath) {
           return true;
@@ -62,36 +61,50 @@ const configHelper = () => {
     .catch(err => {throw err;});
   }
 
-  const saveFolder = (data) =>
-    getData()
+  const saveFolder = (data, folderName, folderPath) => {
+    if(folderName || folderPath) {
+      return getData()
+      .then(config => {console.log(config); return config;})
+      .then(config => config.folders.map(folder => {
+        if(folder.folder.name === folderName && folder.folder.path === folderPath) {
+          return data;
+        } 
+        return folder;
+      }))
+      .then(config => {console.log("new data:"); console.log(config); return config;})
+      .then(newConfig => save(newConfig))
+      .catch(err => {
+        throw err;
+      });
+    }
+    return getData()
     .then(config => {
       config.push(data);
       return config;
     })
     .then(config => save(config))
     .catch(err => err);
+  }
 
-  let save = (data) => fs.writeFileAsync(path.join(process.cwd(), configName),
+  let save = (data) => fs.writeFileAsync(path.join(process.cwd(), config),
                                          JSON.stringify(data))
                         .catch(err => err);
-  const saveTask = (folderName, folderPath, data) =>
-    getData()
-    .then(config =>
-      config.map(folder => {
-        if(folder.folder.name === folderName && folder.folder.path === folderPath) {
-          if(!folder.tasks) {
-            folder.tasks = [];
-          }
-          let id = 1;
-          for(let i = 0; i < folder.tasks.length; i++) {
-            id = folder.tasks[i].id+1;
-          }
-          data.id = id;
-          folder.tasks.push(data);
-        } return folder;
-      }))
-    .then(config => save(config))
-    .catch(err => {throw err});
+ 
+
+  const saveTask = (folderName, folderPath, data) => {
+
+    return getFolder(folderName, folderPath)
+    .then(folder => {
+      folder.tasks = folder.tasks || [];
+      folder.tasks.push(data);
+      return folder;
+    })
+    .then(config => {console.log("new folder:"); console.log(config); return config;})
+    .then(folder => {
+      console.log(folderName, folderPath);
+      return saveFolder(folder, folderName, folderPath);
+    })
+  }
 
   const deleteTask = (folderName, folderPath) => {
     getData()
@@ -114,9 +127,9 @@ const configHelper = () => {
   };
   return {
     get: get,
-    saveFolder: saveFolder,
-    saveTask: saveTask,
-    getTasks: getTasks
+    saveFolder,
+    saveTask,
+    getTasks
   }
 }
 
