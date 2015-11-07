@@ -18,11 +18,8 @@ const TaskCtrl = ($scope) => {
 
   ipc.on('tasks/get', (res) => {
     if(res.status === 200) {
-      console.log('Got the tasks!');
-      console.log(res);
       $scope.tasks = res.data;
       $scope.safeApply();
-      console.log($scope.tasks);
     } else if(res.status === 404) {
       console.log('No tasks found because: "%s"', res.error);
       console.log(res);
