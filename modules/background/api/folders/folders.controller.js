@@ -2,11 +2,11 @@ import Promise from 'bluebird';
 import path from 'path';
 import configHelper from '../configHelper.js';
 
-let Response = (status, error, data) => {
+let Response = (error, data, status) => {
   return {
-    status, //Use HTTP status code
-    error,  //Error object
-    data    //Response data
+    error,
+    data,
+    status
   };
 }
 
@@ -25,7 +25,7 @@ const add = (req, res) => {
             'name': path.basename(req.body.folder),
             'path': path.dirname(req.body.folder)
           }
-        }).then(() => res.sendStatus(201));
+        }).then(() => res.sendStatus(null, null, 200));
 
       } else {
 
@@ -40,11 +40,13 @@ const add = (req, res) => {
 
 const get = (req, res) => {
   configHelper.get().then((folders) => {
+    console.log(folders);
     folders.fest = 'hej';
-    res.sender.send('folders/get', new Response(200, null, folders));
+    console.log("Skickar response!");
+    res.sender.send('folders/get', new Response(null, folders, 200));
   })
   .catch(err => {
-    res.sender.send('folders/get', new Response(404, err.message, null));
+    res.sender.send('folders/get', new Response(err.message, null, 404));
   })
 }
 
