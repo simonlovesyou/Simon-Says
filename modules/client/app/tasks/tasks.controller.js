@@ -1,7 +1,7 @@
 'use strict';
 import angular from 'angular';
 import $ from 'jquery';
-let ipc = require('ipc');
+import configHelper from '../api/configHelper';
 
 const index = {
   'folderList': '.row > .col-md-6:first-child > ul',
@@ -10,23 +10,60 @@ const index = {
 }
 
 const TaskCtrl = ($scope) => {
-
+  
   setTimeout(() => {
-    console.log(getActiveFolder());
-    ipc.send('tasks', {query: 'get', where: {'name': getActiveFolder().name, 'path': getActiveFolder().path}});
+    let folder = getActiveFolder();
+    return configHelper
+    .getTasks(folder.name, folder.path)
+    .then(tasks => {
+      $scope.tasks = tasks;
+      $scope.safeApply();
+    })
+    .catch(err => {
+      console.log(err.message);
+    });
   }, 0);
 
-  ipc.on('tasks/get', (res) => {
-    if(res.status === 200) {
-      console.log('Got the tasks!');
-      console.log(res);
-      $scope.tasks = res.data;
-      $scope.safeApply();
-      console.log($scope.tasks);
-    } else if(res.status === 404) {
-      console.log('No tasks found because: "%s"', res.error);
-      console.log(res);
-    }
+  $('form').submit((event) => {
+    event.preventDefault();
+  })
+  
+  $('#taskSave').on('click', (event) => {
+
+    let folder = getActiveFolder();
+    let matchAll = ($('#taskMatch').val() === 'all');
+
+    var values = {
+      'matchAll':   matchAll
+    };
+
+
+    values.rules = [];
+    $.each($('#formTask').serializeArray(), function(i, field) {
+        values[field.name] = field.value;
+    });
+
+    $('li > select').parent().each((index, value) => {
+
+      let selects = $(value).find('select');
+      values.rules.push({
+        'type':       $(selects[0]).val(),
+        'comparator': $(selects[1]).val(),
+        'reference':  $(value).find('input').val()
+      });
+    });
+    console.log(folder);
+    return configHelper
+    .saveTask(folder.name, folder.path, values)
+    .then(() => {
+      console.log("Task saved!");
+    })
+    .catch(err => {
+      throw err;
+    });
+
+    //ipc.send('tasks', {query: 'add', values});
+
   });
 
   $scope.safeApply = function(fn) {
@@ -42,6 +79,7 @@ const TaskCtrl = ($scope) => {
 }
 
 module.exports = TaskCtrl;
+
 
 
 function getActiveFolder() {
