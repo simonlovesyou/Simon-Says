@@ -10,6 +10,8 @@ const FolderCtrl = ($scope) => {
     if(res.status === 200) {
       $scope.folders = res.data.folders;
       $scope.safeApply();
+    } else if(res.status === 404) {
+      console.log('Could not find the folders')
     }
   });
   $scope.safeApply = function(fn) {
