@@ -1,31 +1,43 @@
-{
-  "folders": [
-    {
-      "folder": {
-        "name": "a_folder/",
-        "path": "/Users/simon/Desktop/"
+[
+  {
+    "folder": {
+      "name": "a_folder/",
+      "path": "/Users/simon/Desktop/"
+    },
+    "tasks": [
+      {
+        "id": 1,
+        "name": "move all pictures",
+        "description": "Move .jpg .png files to Desktop",
+        "matchAll": true,
+        "interval": 5000,
+        "rules": [
+          {
+            "type": "filename",
+            "comparator": "equals",
+            "reference": "lars"
+          }
+        ],
+        "events": [
+          {
+            "type": "copy",
+            "copyName": "test.txt"
+          }
+        ]
       },
-      "description": "desc",
-      "tasks": [
-        {
-          "id": 1,
-          "matchAll": true,
-          "interval": 5000,
-          "rules": [
-            {
-              "type": "filename",
-              "comparator": "equals",
-              "reference": "lars"
-            }
-          ],
-          "events": [
-            {
-              "type": "copy",
-              "copyName": "test.txt"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+      {
+        "name": "namn",
+        "description": "beskr",
+        "matchAll": true,
+        "interval": 1230,
+        "rules": [
+          {
+            "comparator": "equals",
+            "reference": "lol",
+            "type": "name"
+          }
+        ]
+      }
+    ]
+  }
+]
