@@ -1,6 +1,17 @@
 import Promise from 'bluebird';
 import path from 'path';
+let angular;
+let toJson;
+
+if(typeof window === 'undefined') {
+  toJson = JSON.stringify;
+} else {
+  angular = require('angular');
+  toJson = angular.toJson;
+}
+
 let fs = Promise.promisifyAll(require('fs'));
+
 
 const configHelper = () => {
 
@@ -27,6 +38,10 @@ const configHelper = () => {
 
   const getTasks = (folderName, folderPath, taskId) =>
     getFolder(folderName, folderPath)
+    .then(folder => {
+      console.log(folder);
+      return folder;
+    })
     .then(folder =>
       folder.tasks.filter(task => {
         if(taskId === undefined || taskId === null) {
@@ -45,8 +60,12 @@ const configHelper = () => {
       throw new Error('Parameters are wrong');
     }
     return getData()
+    .then(folder => {
+      console.log(folder);
+      return folder;
+    })
     .then(config =>
-      config.folders.filter(folder => {
+      config.filter(folder => {
         if(folder.folder.name === folderName && folder.folder.path === folderPath) {
           return true;
         }
@@ -60,14 +79,14 @@ const configHelper = () => {
       }
       throw new Error('No folder found');
     })
-    .catch(err => {throw err;});
+    .catch(err => {console.log(err);throw err;});
   }
 
   const saveFolder = (data, folderName, folderPath) => {
     if(folderName || folderPath) {
       return getData()
       .then(config => {console.log(config); return config;})
-      .then(config => config.folders.map(folder => {
+      .then(config => config.map(folder => {
         if(folder.folder.name === folderName && folder.folder.path === folderPath) {
           return data;
         } 
@@ -89,7 +108,7 @@ const configHelper = () => {
   }
 
   let save = (data) => fs.writeFileAsync(path.join(process.cwd(), config),
-                                         JSON.stringify(data))
+                                         toJson(data))
                         .catch(err => err);
  
 
