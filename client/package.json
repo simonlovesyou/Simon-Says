@@ -2,7 +2,7 @@
   "name": "Simon-Says",
   "version": "1.0.0",
   "description": "A filesystem directory sorter that will sort the contents of a folder dependent on user specified rules.",
-  "main": "logic/background/index.js",
+  "main": "app/index.js",
   "directories": {
     "test": "test"
   },

@@ -4,11 +4,11 @@ import path from 'path';
 import pathExists from 'path-exists';
 import events from './events.js';
 import comparators from './comparators.js';
-import configHelper from './api/configHelper.js'
+import configHelper from '../app/api/configHelper.js'
 
 const start = cb => {
 
-  configHelper.get()
+  /*configHelper.get()
   .each(
     directory => fs.readdirAsync(path.join(directory.folder.path, directory.folder.name))
     .then(files => {
@@ -25,7 +25,7 @@ const start = cb => {
     })
   ).catch(err => {
     throw new Error(err);
-  });
+  });*/
 };
 
 function testFile(dir, matchAll, rules, file) {

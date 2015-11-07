@@ -44,8 +44,6 @@ const background = (() => {
 });
 
 ipc.on('goto-folders', (e, query) => {
-  console.log("GÅ TILL FOLDERS");
-  console.log('file://' + process.cwd() + '/app/folders/folders.html');
   mainWindow.loadUrl('file://' + process.cwd() + '/app/folders/folders.html');
   mainWindow.openDevTools();
 });
