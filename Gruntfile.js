@@ -102,7 +102,7 @@ module.exports = function(grunt) {
     },
 	  watch: {
 	  	background: {
-	  		files: ["./modules/background/**/*.js"],
+	  		files: ["./modules/**/*.js"],
 	  		tasks: ["eslint", "babel"],
 	  		options: {
           spawn: false
