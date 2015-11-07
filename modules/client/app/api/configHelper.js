@@ -73,8 +73,6 @@ const configHelper = () => {
       })[0])
     .then(folder => {
       if(folder) {
-        console.log("Hittade folder:");
-        console.log(folder);
         return folder;
       }
       throw new Error('No folder found');
@@ -89,10 +87,9 @@ const configHelper = () => {
       .then(config => config.map(folder => {
         if(folder.folder.name === folderName && folder.folder.path === folderPath) {
           return data;
-        } 
+        }
         return folder;
       }))
-      .then(config => {console.log("new data:"); console.log(config); return config;})
       .then(newConfig => save(newConfig))
       .catch(err => {
         throw err;
@@ -110,7 +107,6 @@ const configHelper = () => {
   let save = (data) => fs.writeFileAsync(path.join(process.cwd(), config),
                                          toJson(data))
                         .catch(err => err);
- 
 
   const saveTask = (folderName, folderPath, data) => {
 
@@ -120,7 +116,6 @@ const configHelper = () => {
       folder.tasks.push(data);
       return folder;
     })
-    .then(config => {console.log("new folder:"); console.log(config); return config;})
     .then(folder => {
       console.log(folderName, folderPath);
       return saveFolder(folder, folderName, folderPath);

@@ -10,7 +10,7 @@ const index = {
 }
 
 const TaskCtrl = ($scope) => {
-  
+
   setTimeout(() => {
     let folder = getActiveFolder();
     return configHelper
@@ -27,7 +27,7 @@ const TaskCtrl = ($scope) => {
   $('form').submit((event) => {
     event.preventDefault();
   })
-  
+
   $('#taskSave').on('click', (event) => {
 
     let folder = getActiveFolder();
@@ -39,8 +39,9 @@ const TaskCtrl = ($scope) => {
 
 
     values.rules = [];
+
     $.each($('#formTask').serializeArray(), function(i, field) {
-        values[field.name] = field.value;
+      values[field.name] = field.value;
     });
 
     $('li > select').parent().each((index, value) => {
@@ -56,7 +57,7 @@ const TaskCtrl = ($scope) => {
     return configHelper
     .saveTask(folder.name, folder.path, values)
     .then(() => {
-      console.log("Task saved!");
+      console.log('Task Saved!');
     })
     .catch(err => {
       throw err;
