@@ -13,17 +13,23 @@ let Response = (error, data, status) => {
 }
 
 const add = (req, res) => {
+  let values = req.values;
 
-  let body = req.body;
-  console.log(JSON.parse(body['rules']));
+  let task = {
+    'name':         values.name,
+    'description':  values.description,
+    'matchAll':     values.matchAll,
+    'interval':     parseInt(values.interval, 10),
+    'rules':        values.rules
+  };
 
-  saveTask(body.folderName, body.folderPath, body.taskName,
-          body.taskDescription, body.matchAll, body.interval, JSON.parse(body.rules))
+  return configHelper
+  .saveTask(values.folderName, values.folderPath, task)
   .then(() => {
     return res.sender.send('tasks/add', new Response(null, null, 200));
   })
   .catch(err => {
-    throw new Error(err);
+    throw err;
   });
 
 };
@@ -32,26 +38,12 @@ const get = (req, res) => {
 
   return configHelper
   .getTasks(req.where.name, req.where.path)
-  .then(tasks => res.sender.send('tasks/get', new Response(200, null, tasks)))
+  .then(tasks => res.sender.send('tasks/get', new Response(null, tasks, 200)))
   .catch(err => {
-    res.sender.send('tasks/get', new Response(404, err.message, null));
+    res.sender.send('tasks/get', new Response(err.message, null, 404));
     console.log(err.message);
   });
 }
-
-const saveTask = (folderName, folderPath, taskName, taskDescription, matchAll, interval, rules, cb) => {
-
-  let task = {
-    'name':         taskName,
-    'description':  taskDescription,
-    'matchAll':     matchAll,
-    'interval':     parseInt(interval, 10),
-    'rules':        rules
-  };
-
-  return configHelper.saveTask(folderName, folderPath, task);
-}
-
 
 module.exports = {
   add,
