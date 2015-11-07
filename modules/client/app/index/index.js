@@ -47,45 +47,6 @@ $(document).ready(function() {
     console.log(data);
   });
 
-  //When clicking on 'Save Changes' in the 'New Task' modal
-  $('#taskSave').on('click', function() {
-
-    let folder = getActiveFolder();
-    let rules = [];
-
-    $('#ruleList').children().each(function() {
-      let selects = $(this).find('select');
-      let self = this;
-      //Add each rule
-      rules.push({
-        'type':       $(selects[0]).val(),
-        'comparator': $(selects[1]).val(),
-        'reference':  $(self).find('input').val()
-      });
-    });
-
-
-    $.ajax({
-      url: '/api/tasks/add',
-      type: 'post',
-      dataType: 'json',
-      data: {
-        'folderName': folder.name,
-        'folderPath': folder.path,
-        'taskName': $('#taskName').val(),
-        'taskDescription': $('#taskDescription').val(),
-        'matchAll': $('#taskMatch').val() === 'All',
-        'interval': $('#taskInterval').val(),
-        'rules': JSON.stringify(rules)
-      },
-      statusCode: {
-        200: (res => {
-          console.log('Task saved!');
-        })
-      }
-    });
-  });
-
   //When clicking a folder in the folder list
   $(index.folderList).children().each(function() {
     $(this).on('click', function() {
