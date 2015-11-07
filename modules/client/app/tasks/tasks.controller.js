@@ -75,9 +75,6 @@ const TaskCtrl = ($scope) => {
   };
 }
 
-module.exports = TaskCtrl;
-
-
 function getActiveFolder() {
   console.log($(index.folderList).children().find('.activeFolder'));
   let folderName = $('.activeFolder').find('h3').html();
@@ -89,3 +86,5 @@ function getActiveFolder() {
     'path': folderPath
   }
 }
+
+module.exports = TaskCtrl;
