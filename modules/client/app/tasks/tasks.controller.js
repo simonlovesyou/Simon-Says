@@ -63,9 +63,6 @@ const TaskCtrl = ($scope) => {
       throw err;
     });
 
-    //ipc.send('tasks', {query: 'add', values});
-
->>>>>>> dirchange
   });
 
 
