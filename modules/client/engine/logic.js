@@ -8,10 +8,12 @@ import db from '../app/db';
 
 const start = cb => {
 
-  /*configHelper.get()
-  .each(
+  db('folders').toArray()
+  .forEach(
     directory => fs.readdirAsync(path.join(directory.folder.path, directory.folder.name))
     .then(files => {
+      console.log("Inne i files");
+      console.log(files);
       var fullPath = path.join(directory.folder.path, directory.folder.name);
       files = files || [];
       files.forEach(file => {
@@ -23,9 +25,7 @@ const start = cb => {
         });
       })
     })
-  ).catch(err => {
-    throw new Error(err);
-  });*/
+  )
 };
 
 function testFile(dir, matchAll, rules, file) {
