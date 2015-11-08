@@ -1,43 +1,88 @@
-[
-  {
-    "folder": {
-      "name": "a_folder/",
-      "path": "/Users/simon/Desktop/"
-    },
-    "tasks": [
-      {
-        "id": 1,
-        "name": "move all pictures",
-        "description": "Move .jpg .png files to Desktop",
-        "matchAll": true,
-        "interval": 5000,
-        "rules": [
-          {
-            "type": "filename",
-            "comparator": "equals",
-            "reference": "lars"
-          }
-        ],
-        "events": [
-          {
-            "type": "copy",
-            "copyName": "test.txt"
-          }
-        ]
+{
+  "folders": 
+  [
+    {
+      "folder": {
+        "name": "a_folder/",
+        "path": "/Users/simon/Desktop/"
       },
-      {
-        "name": "namn",
-        "description": "beskr",
-        "matchAll": true,
-        "interval": 1230,
-        "rules": [
-          {
-            "comparator": "equals",
-            "reference": "lol",
-            "type": "name"
-          }
-        ]
-      }
-    ]
-  }
-]
+      "tasks": [
+        {
+          "id": "695212ae-7c00-41ca-9921-d114c7bd964f",
+          "name": "move all pictures",
+          "description": "Move .jpg .png files to Desktop",
+          "matchAll": true,
+          "interval": 5000,
+          "rules": [
+            {
+              "type": "filename",
+              "comparator": "equals",
+              "reference": "lars"
+            }
+          ],
+          "events": [
+            {
+              "type": "copy",
+              "copyName": "test.txt"
+            }
+          ]
+        },
+        {
+          "name": "namn",
+          "description": "beskr",
+          "matchAll": true,
+          "interval": 1230,
+          "rules": [
+            {
+              "comparator": "equals",
+              "reference": "lol",
+              "type": "name"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder": {
+        "name": "b_folder/",
+        "path": "/Users/simon/Desktop/"
+      },
+      "tasks": [
+        {
+          "id": "bdd9a8a7-e4b4-4a36-97ec-cc5bb945bf48",
+          "name": "move alawkfnaökenfl pictures",
+          "description": "Move .jpg .png files to Desktop",
+          "matchAll": true,
+          "interval": 5000,
+          "rules": [
+            {
+              "type": "filename",
+              "comparator": "equals",
+              "reference": "lars"
+            }
+          ],
+          "events": [
+            {
+              "type": "copy",
+              "copyName": "test.txt"
+            }
+          ]
+        },
+        {
+          "id": "332e5395-40ca-4def-8f0e-6a737ec07cd5",
+          "name": "namn",
+          "description": "beskr",
+          "matchAll": true,
+          "interval": 1230,
+          "rules": [
+            {
+              "comparator": "equals",
+              "reference": "lol",
+              "type": "name"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
