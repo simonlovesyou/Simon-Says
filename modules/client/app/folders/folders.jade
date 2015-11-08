@@ -16,10 +16,11 @@ block content
 							p #[i {{folder.folder.path}}]					
 		.col-md-6(ng-controller="TaskCtrl")
 			button.btn.btn-primary.btn-lg(type="button", data-toggle="modal", data-target="#addTaskModal") +
-			ul(ng-repeat="task in tasks")
+			ul(id="taskList" ng-repeat="task in tasks")
 				li
 					h4 {{task.name}}
 					p #[i {{task.description}}]
+					p.id {{task.id}}
 		.modal.modal-fade(id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="addTaskLabel")
 			.modal-dialog(role="document")
 				.modal-content
