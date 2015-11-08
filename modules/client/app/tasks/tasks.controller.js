@@ -11,57 +11,94 @@ const index = {
 }
 
 const TaskCtrl = ($scope) => {
+  $(document).ready(() => {
 
-  setTimeout(function() {
-    let folder = getActiveFolder();
-    $scope.tasks = db('folders').find({folder}).tasks;
-    $scope.safeApply();
-  }, 0);
+    $scope.loadTasks();
+    $scope.setTaskModals();
 
-  $('#taskSave').on('click', (event) => {
+    //Listening on the user clicking on the folder list
+    $('#folderList').on('click', (index, list) => {
+      $scope.loadTasks();
+      $scope.setTaskModals();
+    })
 
-    let folder = getActiveFolder();
-    let matchAll = ($('#taskMatch').val() === 'all');
-
-    var values = {
-      'id':         uuid(),
-      'matchAll':   matchAll
-    };
-
-    values.rules = [];
-
-    $.each($('#formTask').serializeArray(), function(i, field) {
-      values[field.name] = field.value;
+    //Remove every appended rule to the rule list within the edit task modal
+    $('#editTaskModal').on('hidden.bs.modal', e => {
+      $('#editRuleList').contents().remove();
     });
 
-    $('li > select').parent().each((index, value) => {
+    //Clear every field in the add task modal
+    $('#addTaskModal').on('hidden.bs.modal', e => {
+      $('#ruleList').contents().remove();
+      $('#addTaskModal input').each((index, input) => {
+        $(input).val('');
+      });
+      $('#taskMatch').val('all');
+    });
 
-      let selects = $(value).find('select');
-      values.rules.push({
-        'type':       $(selects[0]).val(),
-        'comparator': $(selects[1]).val(),
-        'reference':  $(value).find('input').val()
+    //When clicking on 'Add rule' in the 'Add task' modal
+    $('#addRule').on('click', () => {
+      addRule($('#ruleList'));
+      //Add eventlistener on each new delete button
+      $('#ruleList').last().find('button').each((index, button) => {
+        let self = button;
+        $(self).on('click', function() {
+          $(self).parent().remove();
+        })
       });
     });
 
-    db('folders')
-    .find({folder})
-    .tasks.push(values);
+    //Save a task
+    $('#taskSave').on('click', (event) => {
+
+      let folder = getActiveFolder();
+      let matchAll = ($('#taskMatch').val() === 'all');
+
+      var values = {
+        'id':         uuid(),
+        'matchAll':   matchAll
+      };
+
+      values.rules = [];
+
+      $.each($('#formTask').serializeArray(), function(i, field) {
+        values[field.name] = field.value;
+      });
+
+      $('li > select').parent().each((index, value) => {
+
+        let selects = $(value).find('select');
+        values.rules.push({
+          'type':       $(selects[0]).val(),
+          'comparator': $(selects[1]).val(),
+          'reference':  $(value).find('input').val()
+        });
+      });
+
+      db('folders')
+      .find({folder})
+      .tasks.push(values);
+    });
+
+    $('form').submit((event) => {
+      event.preventDefault();
+    });
   });
 
-  $('form').submit((event) => {
-    event.preventDefault();
-  });
+  $scope.loadTasks = () => {
+    let folder = getActiveFolder();
+    $scope.tasks = db('folders').find({folder}).tasks;
+    $scope.safeApply();
+  }
 
-  setTimeout(() => {
+  $scope.setTaskModals = () => {
     $('#taskList > li').each((index, li) => {
-      console.log($(li));
       $(li).on('click', () => {
         $('#editTaskModal').modal();
         let folder = getActiveFolder();
         let id = $(li).find('.id').html()
-        let task = db('folders').find({folder}).tasks.filter(task => (task.id === id))[0];
 
+        let task = db('folders').find({folder}).tasks.filter(task => (task.id === id))[0];
 
         $('#formEditTask input').each((index, val) => {
           if($(val).attr('id') === 'taskName') {
@@ -75,9 +112,11 @@ const TaskCtrl = ($scope) => {
 
         $('#editTaskMatch').val(task.matchAll ? 'all' : 'any');
 
-        task.rules.forEach(rule => {
-          addRule($('#editRuleList'));
-        });
+        if($('#editRuleList > li').length === 0) {
+          task.rules.forEach(rule => {
+            addRule($('#editRuleList'));
+          });
+        }
 
         $('#editRuleList li').each((index, li) => {
           let selects = $(li).children('select');
@@ -90,19 +129,14 @@ const TaskCtrl = ($scope) => {
           if(type === 'filename') {
             type = 'name';
           }
+
           $($(selects).get(0)).val(type);
           $($(selects).get(1)).val(comparator);
-
           $(input).val(reference);
-
-        })
-
-      })
+        });
+      });
     })
-  }, 0);
-
-
-
+  }
 
 
   $scope.safeApply = function(fn) {
@@ -118,7 +152,6 @@ const TaskCtrl = ($scope) => {
 }
 
 function getActiveFolder() {
-  console.log($(index.folderList).children().find('.activeFolder'));
   let folderName = $('.activeFolder').find('h3').html();
   let folderPath = $('.activeFolder').find('p').find('i').html();
   setTimeout(() => {console.log($('.activeFolder'))}, 0);
@@ -130,7 +163,6 @@ function getActiveFolder() {
 }
 
 function addRule(ulList) {
-  //Make these into inputs instead
   ulList.append('<li>'+
                   '<button role="button" class="pull-left btn btn-danger"> - </button>'+
                   '<select class="col-md-3" form="formTask">'+
