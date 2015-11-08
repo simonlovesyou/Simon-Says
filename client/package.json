@@ -15,6 +15,7 @@
     "datauri": "^0.8.0",
     "electron-jade": "^1.2.2",
     "jquery": "^2.1.4",
+    "lodash": "^3.10.1",
     "lowdb": "^0.10.2",
     "node-uuid": "^1.4.3",
     "routes": "^2.1.0",

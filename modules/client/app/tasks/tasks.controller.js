@@ -3,6 +3,7 @@ import angular from 'angular';
 import $ from 'jquery';
 import db from '../db';
 import uuid from 'node-uuid';
+import _ from 'lodash';
 
 const index = {
   'folderList': '.row > .col-md-6:first-child > ul',
