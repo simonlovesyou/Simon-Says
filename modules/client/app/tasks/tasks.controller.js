@@ -95,13 +95,47 @@ const TaskCtrl = ($scope) => {
           $($(selects).get(1)).val(comparator);
 
           $(input).val(reference);
-
         })
 
-      })
+        $('#editTaskSave').on('click', event => {
+
+          let folder = getActiveFolder();
+          let matchAll = ($('#editTaskMatch').val() === 'all');
+
+          var values = {
+            'id':         task.id,
+            'matchAll':   matchAll
+          };
+
+          values.rules = [];
+
+          $.each($('#formEditTask').serializeArray(), function(i, field) {
+            values[field.name] = field.value;
+          });
+
+          $('li > select').parent().each((index, value) => {
+
+            let selects = $(value).find('select');
+            values.rules.push({
+              'type':       $(selects[0]).val(),
+              'comparator': $(selects[1]).val(),
+              'reference':  $(value).find('input').val()
+            });
+          });
+
+          let index = _(db('folders')
+          .find({folder}).tasks)
+          .findIndex(task => task.id === values.id)
+
+          db('folders')
+          .chain()
+          .find({folder})
+          .set('tasks['+index+']', values)
+          .value()
+        })
+      });
     })
   }, 0);
-
 
 
 
