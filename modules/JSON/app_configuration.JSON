@@ -11,13 +11,18 @@
           "id": "695212ae-7c00-41ca-9921-d114c7bd964f",
           "name": "move all pictures",
           "description": "Move .jpg .png files to Desktop",
-          "matchAll": true,
+          "matchAll": false,
           "interval": 5000,
           "rules": [
             {
-              "type": "filename",
+              "type": "extension",
               "comparator": "equals",
               "reference": "lars"
+            },
+            {
+              "type": "extension",
+              "comparator": "doesNotEquals",
+              "reference": "txt"
             }
           ],
           "events": [
@@ -59,26 +64,17 @@
               "type": "filename",
               "comparator": "equals",
               "reference": "lars"
+            },
+            {
+              "type": "extension",
+              "comparator": "doesNotEquals",
+              "reference": "txt"
             }
           ],
           "events": [
             {
               "type": "copy",
               "copyName": "test.txt"
-            }
-          ]
-        },
-        {
-          "id": "332e5395-40ca-4def-8f0e-6a737ec07cd5",
-          "name": "namn",
-          "description": "beskr",
-          "matchAll": true,
-          "interval": 1230,
-          "rules": [
-            {
-              "comparator": "equals",
-              "reference": "lol",
-              "type": "name"
             }
           ]
         }
