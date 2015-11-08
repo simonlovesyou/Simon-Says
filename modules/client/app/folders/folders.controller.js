@@ -5,10 +5,7 @@ import db from '../db';
 
 const FolderCtrl = ($scope) => {
 
-  configHelper.get().then((folders) => {
-    $scope.folders = folders;
-    $scope.safeApply();
-  });
+  $scope.folders = db('folders').toArray();
 
   $scope.safeApply = function(fn) {
     var phase = this.$root.$$phase;
