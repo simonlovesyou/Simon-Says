@@ -2,7 +2,7 @@
 import background from './background/background.js';
 import appLogic from './engine/logic.js';
 
-//appLogic.start();
+appLogic.start();
 
 background();
 
