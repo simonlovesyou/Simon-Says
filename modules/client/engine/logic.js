@@ -4,7 +4,6 @@ import path from 'path';
 import pathExists from 'path-exists';
 import events from './events.js';
 import comparators from './comparators.js';
-import configHelper from '../app/api/configHelper.js'
 
 const start = cb => {
 

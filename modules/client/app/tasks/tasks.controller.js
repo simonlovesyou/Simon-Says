@@ -1,7 +1,6 @@
 'use strict';
 import angular from 'angular';
 import $ from 'jquery';
-import configHelper from '../api/configHelper';
 
 const index = {
   'folderList': '.row > .col-md-6:first-child > ul',
