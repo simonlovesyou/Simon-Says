@@ -1,7 +1,7 @@
 'use strict';
 import angular from 'angular';
 import $ from 'jquery';
-import configHelper from '../api/configHelper.js';
+import db from '../db';
 
 const FolderCtrl = ($scope) => {
 

@@ -4,6 +4,7 @@ import path from 'path';
 import pathExists from 'path-exists';
 import events from './events.js';
 import comparators from './comparators.js';
+import db from '../app/db';
 
 const start = cb => {
 

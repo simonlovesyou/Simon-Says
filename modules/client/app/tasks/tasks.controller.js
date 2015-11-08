@@ -1,6 +1,7 @@
 'use strict';
 import angular from 'angular';
 import $ from 'jquery';
+import db from '../db';
 
 const index = {
   'folderList': '.row > .col-md-6:first-child > ul',
