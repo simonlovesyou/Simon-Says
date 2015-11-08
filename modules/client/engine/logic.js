@@ -12,8 +12,6 @@ const start = cb => {
   .forEach(
     directory => fs.readdirAsync(path.join(directory.folder.path, directory.folder.name))
     .then(files => {
-      console.log("Inne i files");
-      console.log(files);
       var fullPath = path.join(directory.folder.path, directory.folder.name);
       files = files || [];
       files.forEach(file => {
