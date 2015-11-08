@@ -47,54 +47,6 @@ $(document).ready(function() {
     console.log(data);
   });
 
-  //When clicking a folder in the folder list
-  $(index.folderList).children().each(function() {
-    $(this).on('click', function() {
-
-      $(this).siblings().find('div').removeClass('active-folder');
-      $(this).find('div').addClass('active-folder');
-
-      let folder = getActiveFolder();
-
-      let query = $.param({
-        'folderName': folder.name,
-        'folderPath': folder.path
-      });
-
-      $.ajax({
-        url: '/api/tasks/get?'+query,
-        type: 'get',
-        statusCode: {
-          200: (res => {
-            $(index.taskList).empty();
-            $(JSON.parse(res)).each(function() {
-              console.log('Success!');
-              $(index.taskList).append( '<li>'+
-                                          '<p>'+this.id+'</p>'+
-                                          '<h4>'+this.name+'</h4>'+
-                                          '<p> <i>'+this.description+'</i> </p>'+
-                                        '</li>'
-                                      );
-            });
-            setTaskClickEvent();
-          })
-        }
-      });
-    });
-  });
-
-  //When clicking on 'Add rule' in the 'Add task' modal
-  $('#addRule').on('click', () => {
-    addRule($('#ruleList'));
-
-    //Add eventlistener on each new delete button
-    $('#ruleList').last().find('button').each((index, button) => {
-      let self = button;
-      $(self).on('click', function() {
-        $(self).parent().remove();
-      })
-    });
-  });
   //When clicking on 'Save Changes' in the 'Edit Task' modal
   $('#saveTaskEdit').on('click', () => {
 
