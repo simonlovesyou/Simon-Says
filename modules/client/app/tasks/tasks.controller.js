@@ -51,7 +51,59 @@ const TaskCtrl = ($scope) => {
 
   $('form').submit((event) => {
     event.preventDefault();
-  })
+  });
+
+  setTimeout(() => {
+    $('#taskList > li').each((index, li) => {
+      console.log($(li));
+      $(li).on('click', () => {
+        $('#editTaskModal').modal();
+        let folder = getActiveFolder();
+        let id = $(li).find('.id').html()
+        let task = db('folders').find({folder}).tasks.filter(task => (task.id === id))[0];
+
+
+        $('#formEditTask input').each((index, val) => {
+          if($(val).attr('id') === 'taskName') {
+            $(val).val(task.name);
+          } else if($(val).attr('id') === 'taskDescription') {
+            $(val).val(task.description);
+          } else if($(val).attr('id') === 'taskInterval') {
+            $(val).val(task.interval);
+          }
+        });
+
+        $('#editTaskMatch').val(task.matchAll ? 'all' : 'any');
+
+        task.rules.forEach(rule => {
+          addRule($('#editRuleList'));
+        });
+
+        $('#editRuleList li').each((index, li) => {
+          let selects = $(li).children('select');
+          let input = $(li).children('input');
+
+          let type = task.rules[index].type;
+          let comparator = task.rules[index].comparator;
+          let reference = task.rules[index].reference;
+
+          if(type === 'filename') {
+            type = 'name';
+          }
+          $($(selects).get(0)).val(type);
+          $($(selects).get(1)).val(comparator);
+
+          $(input).val(reference);
+
+        })
+
+      })
+    })
+  }, 0);
+
+
+
+
 
   $scope.safeApply = function(fn) {
     var phase = this.$root.$$phase;
@@ -75,6 +127,24 @@ function getActiveFolder() {
     'name': folderName,
     'path': folderPath
   }
+}
+
+function addRule(ulList) {
+  //Make these into inputs instead
+  ulList.append('<li>'+
+                  '<button role="button" class="pull-left btn btn-danger"> - </button>'+
+                  '<select class="col-md-3" form="formTask">'+
+                    '<option value="name"> Filename </option>'+
+                    '<option value="extension"> Extension </option>'+
+                  '</select>'+
+                  '<select class="col-md-3" form="formTask">'+
+                    '<option value="equals"> Equals </option>'+
+                    '<option value="contains"> Contains </option>'+
+                    '<option value="doesNotEquals"> Does not equals </option>'+
+                    '<option value="doesNotContain"> Does not contain </option>'+
+                  '</select>'+
+                  '<input type="text" placeholder="Match">'+
+                '</li>');
 }
 
 module.exports = TaskCtrl;
