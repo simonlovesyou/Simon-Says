@@ -2,6 +2,7 @@
 import angular from 'angular';
 import $ from 'jquery';
 import db from '../db';
+import uuid from 'node-uuid';
 
 const index = {
   'folderList': '.row > .col-md-6:first-child > ul',
@@ -11,22 +12,11 @@ const index = {
 
 const TaskCtrl = ($scope) => {
 
-  setTimeout(() => {
+  setTimeout(function() {
     let folder = getActiveFolder();
-    return configHelper
-    .getTasks(folder.name, folder.path)
-    .then(tasks => {
-      $scope.tasks = tasks;
-      $scope.safeApply();
-    })
-    .catch(err => {
-      console.log(err.message);
-    });
+    $scope.tasks = db('folders').find({folder}).tasks;
+    $scope.safeApply();
   }, 0);
-
-  $('form').submit((event) => {
-    event.preventDefault();
-  })
 
   $('#taskSave').on('click', (event) => {
 
@@ -34,9 +24,9 @@ const TaskCtrl = ($scope) => {
     let matchAll = ($('#taskMatch').val() === 'all');
 
     var values = {
+      'id':         uuid(),
       'matchAll':   matchAll
     };
-
 
     values.rules = [];
 
@@ -53,54 +43,15 @@ const TaskCtrl = ($scope) => {
         'reference':  $(value).find('input').val()
       });
     });
-    console.log(folder);
-    return configHelper
-    .saveTask(folder.name, folder.path, values)
-    .then(() => {
-      console.log('Task Saved!');
-    })
-    .catch(err => {
-      throw err;
-    });
 
+    db('folders')
+    .find({folder})
+    .tasks.push(values);
   });
-
 
   $('form').submit((event) => {
     event.preventDefault();
   })
-  
-  $('#taskSave').on('click', (event) => {
-
-    let folder = getActiveFolder();
-    let matchAll = ($('#taskMatch').val() === 'all');
-
-    var values = {
-      'folderName': folder.name,
-      'folderPath': folder.path,
-      'matchAll':   matchAll
-    };
-
-
-    values.rules = [];
-    $.each($('#formTask').serializeArray(), function(i, field) {
-        values[field.name] = field.value;
-    });
-
-    $('li > select').parent().each((index, value) => {
-
-      let selects = $(value).find('select');
-      values.rules.push({
-        'type':       $(selects[0]).val(),
-        'comparator': $(selects[1]).val(),
-        'reference':  $(value).find('input').val()
-      });
-    });
-
-    ipc.send('tasks', {query: 'add', values});
-
-  });
-
 
   $scope.safeApply = function(fn) {
     var phase = this.$root.$$phase;
