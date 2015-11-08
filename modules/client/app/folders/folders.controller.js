@@ -7,6 +7,13 @@ const FolderCtrl = ($scope) => {
 
   $scope.folders = db('folders').toArray();
 
+
+  $scope.selectedIndex = 0;
+
+  $scope.folderClicked = $index => {
+    $scope.selectedIndex = $index;
+  }
+
   $scope.safeApply = function(fn) {
     var phase = this.$root.$$phase;
     if(phase === '$apply' || phase === '$digest') {
