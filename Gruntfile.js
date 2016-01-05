@@ -144,12 +144,10 @@ module.exports = function(grunt) {
 	});
   grunt.loadNpmTasks("grunt-babel");
 	grunt.loadNpmTasks("grunt-eslint");
-  grunt.loadNpmTasks("grunt-jsonmin");
   grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.loadNpmTasks("grunt-contrib-jade");
 	grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-contrib-clean");
-  grunt.loadNpmTasks("grunt-contrib-cssmin");
 
 	grunt.registerTask("default", ["clean", "babel", "jade", "copy", "watch"]);
 
