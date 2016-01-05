@@ -1,27 +1,9 @@
-extends ../index/layout
+extends layout
 
 block content
-	link(rel="stylesheet", href="folders.min.css")
-	link(rel="stylesheet" href="../tasks/tasks.min.css")
-	include ../partials/header/header.jade
-	
 	.row
 		button.btn.btn-primary.btn-lg(type="button", data-toggle="modal", data-target="#addFolderModal") +
-	.row(ng-controller="FolderCtrl")
-		.col-md-6
-			ul(id="folderList")
-					li(ng-repeat="folder in folders")
-						div(ng-class="{ 'activeFolder': $index == selectedIndex }"
-								ng-click="folderClicked($index)").folder
-							h3 {{folder.folder.name}}
-							p #[i {{folder.folder.path}}]					
-		.col-md-6(ng-controller="TaskCtrl")
-			button.btn.btn-primary.btn-lg(type="button", data-toggle="modal", data-target="#addTaskModal") +
-			ul(id="taskList" ng-repeat="task in tasks")
-				li
-					h4 {{task.name}}
-					p #[i {{task.description}}]
-					p.id {{task.id}}
+	.row
 		.modal.modal-fade(id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="addTaskLabel")
 			.modal-dialog(role="document")
 				.modal-content
@@ -125,3 +107,5 @@ block content
 							.modal-footer
 								button.btn.btn-default(type="button" data-dismiss="modal") Close
 								button.btn.btn-primary(type="button" id="folderSave") Save Changes
+	#root
+	//-script(type="text/javascript" src="../../components/Folders/Folders.js")

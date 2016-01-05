@@ -1,9 +1,12 @@
+'use strict';
 //# sourceMappingURL=main.map
-let ipc = require('ipc');
 window.$ = window.jQuery = require('jquery');
+$(document).ready(function() {
+  let Folders = require('../../components/Folders/Folders.js');
+})
 
 
-//Look up index for HTMLElements
+/*//Look up index for HTMLElements
 const index = {
   'folderList': '.row > .col-md-6:first-child > ul',
   'taskList': '.row > .col-md-6:nth-child(2) > ul',
@@ -165,4 +168,4 @@ function getActiveFolder() {
     'path': folderPath
   }
 }
-
+*/
