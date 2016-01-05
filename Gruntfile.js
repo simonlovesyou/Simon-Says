@@ -1,18 +1,17 @@
 module.exports = function(grunt) {
 
 	grunt.initConfig({
-	  "babel": {
+	  babel: {
+      options: {
+        presets: ['es2015']
+      },
 	    background: {
         options: {
           sourceMap: false
         },
-	      files: [{
-          "expand": true,
-          "cwd": "modules/background/",
-          "src": ["**/*.js"],
-          "dest": "client/background",
-          "ext": ".js"
-	      }]
+	      files: {
+          'client/background.js': 'src/background.js'
+        }
 	    },
       client: {
         options: {
@@ -20,132 +19,138 @@ module.exports = function(grunt) {
         },
         files: [{
           "expand": true,
-          "cwd": "modules/client/",
-          "src": ["**/*.js"],
+          "cwd": "src/",
+          "src": ["engine/**/*.js", "index.js"],
           "dest": "./client/",
+          "ext": ".js"
+        }]
+      },
+      react: {
+        options: {
+          plugins: ['transform-react-jsx'],
+          presets: ['es2015', 'react', 'stage-1'],
+          sourceMap: true
+        },
+        files: [{
+          expand: true,
+          cwd: 'src/', // Custom folder
+          src: ['**/*.jsx'],
+          dest: './client/', 
+          ext: '.js'
+        }]
+      },
+      db: {
+        options: {
+          sourceMap: true
+        },
+        files: [{
+          "expand": true,
+          "cwd": "src/db/",
+          "src": ["**/*.js"],
+          "dest": "./client/db/",
           "ext": ".js"
         }]
       }
 	  },
     eslint: {
-      target: ["./modules/**/*.js"]
-    },
-    uglify: {
-      client: {
-        options: {
-          sourceMapIncludeSources: true,
-          sourceMap: function(path) { return path.replace(/.js/,".map")} 
-        },
-        files: [{
-          expand: true,
-          cwd: "client/app/",
-          src: "**/*.js",
-          dest: "client/app/",
-          ext: ".min.js"
-        }]
-      }
+      target: ["./src/**/*.js"]
     },
     jade: {
-      debug: {
-        options: {
-          data: {
-            debug: true
-          },
-          pretty: true
-        },
-        files: {
-          "debug/index.html": ["modules/client/app/index/content.jade"],
-          "debug/folders.html": ["modules/client/app/folders/folders.jade"]
-        }
-      },
       release: {
         options: {
           data: {
             debug: false
           },
-          pretty: false
+          pretty: true
         },
         files: {
-          "client/app/index/index.html": ["modules/client/app/index/content.jade"],
-          "client/app/folders/folders.html": ["modules/client/app/folders/folders.jade"]
+          "client/static/html/index.html": ["src/views/content.jade"],
+          "client/static/html/folders.html": ["src/views/folders.jade"]
         },
         compile: {
           expand: true
         }
       }
     },
-    jsonmin: {
-      build: {
-        options: {
-          stripWhiteSpace: true,
-          stripComments: true
-        },
-        files: {
-          "client/config/app_configuration.min.JSON": "modules/JSON/app_configuration.JSON",
-          "client/config/window_configuration.min.JSON": "modules/JSON/window_configuration.JSON"
-        }
-      }
-    },
-    cssmin: {
-      main: {
-      files: [{
-        expand: true,
-        cwd: 'modules/client/app/',
-        src: ['**/*.css'],
-        dest: 'client/app',
-        ext: '.min.css'
-      }]
-      }
+    copy: {
+      json: {
+        files: [{
+          expand: true, 
+          cwd: 'src/static/',
+          src: ['json/*.json'], 
+          dest: 'client/static/', 
+          filter: 'isFile'
+        }]
+      },
+      css: {
+        files: [{
+          expand: true,
+          cwd: 'src/static/',
+          src: ['css/**/*.css'],
+          dest: 'client/static/',
+          ext: '.min.css'
+        }]
+      },
+      js: {
+        files: [{
+          expand: true,
+          cwd: 'src/static/',
+          src: ['js/**/*.js'],
+          dest: 'client/static/',
+          ext: '.js'
+        }]
+      },
     },
     clean: {
       tmp: ["client/**/*", "!client/package.json", "!client/node_modules/**"]
     },
 	  watch: {
-	  	background: {
-	  		files: ["./modules/**/*.js"],
-	  		tasks: ["eslint", "babel"],
-	  		options: {
-          spawn: false
-        }
+      options: {
+        spawn: false
+      },
+	  	client: {
+	  		files: ["engine/**/*.js", "src/index.js"],
+	  		tasks: ["babel:client"]
 	  	},
-      client: {
-        files: ["./modules/client/app/**/*.js"],
-        tasks: ["eslint", "babel:client"],
-        options: {
-          spawn: false
-        }
+      background: {
+        files: ["src/background.js"],
+        tasks: ["babel:background"]
+      },
+      jsx: {
+        files: ["src/components/**/*.jsx"],
+        tasks: ["babel:react"]
+      }, 
+      db: {
+        files: ["src/db/**/*.js"],
+        tasks: ["babel:db"]
       },
       jade: {
-        files: ["./modules/**/*.jade"],
-        tasks: ["jade"],
-        options: {
-          spawn: false
-        }
+        files: ["./src/**/*.jade"],
+        tasks: ["jade"]
+      },
+      js: {
+        files: ["./src/static/js/*.js"],
+        tasks: ["copy:js"]
       },
       json: {
-        files: ["./modules/**/*.JSON"],
-        tasks: ["jsonmin"],
-        options: {
-          spawn: false
-        }
+        files: ["./src/static/json/*.json"],
+        tasks: ["copy:json"]
       },
       css: {
-        files: ["./modules/**/*.css"],
-        tasks: ["cssmin"],
-        options: {
-          spawn: false
-        }
+        files: ["./src/static/css/*.css"],
+        tasks: ["copy:css"]
       }
 	  }
 	});
   grunt.loadNpmTasks("grunt-babel");
 	grunt.loadNpmTasks("grunt-eslint");
   grunt.loadNpmTasks("grunt-jsonmin");
+  grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.loadNpmTasks("grunt-contrib-jade");
 	grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-contrib-clean");
-  grunt.loadNpmTasks("grunt-contrib-uglify");
   grunt.loadNpmTasks("grunt-contrib-cssmin");
-	grunt.registerTask("default", ["clean", "eslint", "babel", "jade", "jsonmin", "cssmin", "uglify", "watch"]);
+
+	grunt.registerTask("default", ["clean", "babel", "jade", "copy", "watch"]);
 
 };
