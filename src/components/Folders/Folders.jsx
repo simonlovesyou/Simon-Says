@@ -29,7 +29,20 @@ export default class Folders extends Component {
   }
 
   handleListUpdate(name, path) {
-    this.setState({tasks: db('folders').find({folder:{name: name, path: path}}).tasks})
+    this.setState(
+    {
+      tasks: {
+        folder: {name, path},
+        tasks: db('folders')
+                  .find({
+                        folder: {
+                          name, 
+                          path
+                        }
+                      })
+                    .tasks
+      }
+    });
   }
 
   render() {
