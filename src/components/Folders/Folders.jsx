@@ -17,7 +17,10 @@ export default class Folders extends Component {
 
   state = {
     folders: db('folders').toArray(),
-    tasks: db('folders').toArray()[0].tasks
+    tasks: {
+                folder: db('folders').toArray()[0].folder,
+                tasks: db('folders').toArray()[0].tasks
+              }
   }
 
   constructor (props) {
@@ -35,7 +38,7 @@ export default class Folders extends Component {
         <FolderList 
           folders={this.state.folders} 
           onListUpdate={this.handleListUpdate}/>
-        <TaskList tasks={this.state.tasks} />
+        <TaskList taskData={this.state.tasks} />
       </div>
     );
   }
