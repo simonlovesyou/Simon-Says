@@ -1,32 +1,3 @@
 extends layout.jade
 
 block content
-	include partials/header.jade
-	
-	//-each folder in folders
-			h2= folder.folder.name
-			p= folder.folder.path
-			h3 Tasks
-			each task in folder.tasks
-				h4= task.name
-				p= task.description
-				p Match all rules: #{task.matchAll}
-				p Refresh interval: #{task.interval} ms
-				h4 Rules:
-				each rule in task.rules
-					div
-						ul
-							li 
-								p Type of rule: #{rule.type}
-							ul
-								li
-									p Verifier: #{rule.verifier}
-								li
-									p Reference: #{rule.reference}
-				h4 Event
-				each event in task.events
-					p Type of event: #{event.type}
-					if event.type == 'rename'
-						p Rename to: #{event.newName}
-					if event.type == 'move'
-						p Move to: #{event.path}

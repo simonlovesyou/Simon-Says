@@ -2,110 +2,13 @@ extends layout
 
 block content
 	.row
-		button.btn.btn-primary.btn-lg(type="button", data-toggle="modal", data-target="#addFolderModal") +
+		button.btn.btn-primary.btn-lg(type="button", id="addFolderButton" data-toggle="modal", data-target="#generic-modal") +
+		button.btn.btn-primary.btn-lg(type="button", id="addTaskButton" data-toggle="modal", data-target="#generic-modal") +
 	.row
-		.modal.modal-fade(id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="addTaskLabel")
+		.modal.modal-fade(id="generic-modal" tabindex="-1" role="dialog" aria-labelledby="addFolderLabel")
 			.modal-dialog(role="document")
 				.modal-content
 					.container-fluid
 						.row
-							.modal-header
-								.button(type="button" class="close" data-dismiss="modal" aria-label="Close")
-									span(aria-hidden="true") &times;
-								h4.modal-title(id="addTaskLabel") New Task
-						form(id="formTask" action="")
-							.row
-								.modal-body
-									.row
-										.col-md-10
-											input(type="text" id="taskName" name="name" placeholder="Name")
-									.row
-										.col-md-10
-											input(type="text" id="taskDescription" name="description" placeholder="Description").col-md-11
-									.row
-										.col-md-10
-											input(type="text" id="taskInterval" name="interval" placeholder="Interval").col-md-11
-									.row
-										.col-md-9
-											span.col-md-2
-												p
-													| Match
-											select.col-md-4(id="taskMatch")
-												option(value="all") All
-												option(value="any") Any
-											span.col-md-4
-												p
-													| rule/s
-									.row
-										.col-md-3
-											button(role="button" id="addRule") Add rule
-								.row
-									ul(id="ruleList")
-
-							.row
-								.modal-footer
-									button.btn.btn-default(type="button" data-dismiss="modal") Close
-									input.btn.btn-primary(type="submit" id="taskSave" value="Save Changes") 
-		.modal.modal-fade(id="editTaskModal" tabindex="-1" role="dialog" aria-labelledby="editTaskLabel")
-			.modal-dialog(role="document")
-				.modal-content
-					.container-fluid
-						.row
-							.modal-header
-								.button(type="button" class="close" data-dismiss="modal" aria-label="Close")
-									span(aria-hidden="true") &times;
-								h4.modal-title(id="editTaskLabel") Edit Task
-						form(id="formEditTask" action="")
-							.row
-								.modal-body
-									.row
-										.col-md-10
-											input(type="text" id="taskName" name="name" placeholder="Name")
-									.row
-										.col-md-10
-											input(type="text" id="taskDescription" name="description" placeholder="Description").col-md-11
-									.row
-										.col-md-10
-											input(type="text" id="taskInterval" name="interval" placeholder="Interval").col-md-11
-									.row
-										.col-md-9
-											span.col-md-2
-												p
-													| Match
-											select.col-md-4(id="editTaskMatch")
-												option(value="all") All
-												option(value="any") Any
-											span.col-md-4
-												p
-													| rule/s
-									.row
-										.col-md-3
-											button(role="button" id="addRule") Add rule
-								.row
-									ul(id="editRuleList")
-
-							.row
-								.modal-footer
-									button.btn.btn-default(type="button" data-dismiss="modal") Close
-									input.btn.btn-primary(type="submit" id="editTaskSave" value="Save Changes")
-		.modal.modal-fade(id="addFolderModal" tabindex="-1" role="dialog" aria-labelledby="addFolderLabel")
-			.modal-dialog(role="document")
-				.modal-content
-					.container-fluid
-						.row
-							.modal-header
-								.button.close(type="button" data-dismiss="modal" aria-label="Close")
-									span(aria-hidden="true") &times;
-								h4.modal-title(id="addFolderLabel") New Folder
-						.row
-							.modal-body
-								.row
-									.col-md-10
-										input(type="text" id="folderName" placeholder="Relative path to folder").col-md-12
-
-						.row
-							.modal-footer
-								button.btn.btn-default(type="button" data-dismiss="modal") Close
-								button.btn.btn-primary(type="button" id="folderSave") Save Changes
+							#modal
 	#root
-	//-script(type="text/javascript" src="../../components/Folders/Folders.js")
