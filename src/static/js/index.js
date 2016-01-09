@@ -3,6 +3,8 @@
 window.$ = window.jQuery = require('jquery');
 $(document).ready(function() {
   let Folders = require('../../components/Folders/Folders.js');
+  let ModalAddFolder = require('../../components/Modals/ModalAddFolder.js');
+  let ModalAddTask = require('../../components/Modals/ModalAddTask.js');
 })
 
 
