@@ -36,7 +36,8 @@ module.exports = function(grunt) {
           cwd: 'src/', // Custom folder
           src: ['**/*.jsx'],
           dest: './client/', 
-          ext: '.js'
+          ext: '.js',
+          extDot: 'last'
         }]
       },
       db: {
@@ -88,7 +89,7 @@ module.exports = function(grunt) {
           cwd: 'src/static/',
           src: ['css/**/*.css'],
           dest: 'client/static/',
-          ext: '.min.css'
+          ext: '.css'
         }]
       },
       js: {
